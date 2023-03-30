@@ -1,0 +1,145 @@
+phone: 9062235891
+pwd: 123
+
+
+1. signup
+  - url(post): http://10.10.18.80:8080/api/signup
+
+  - sending data: 
+  	.name:         string
+	.phoneNumber:  string
+  	.password:     string
+	
+  - return:
+    result: string
+    (result == '1') => username already exists
+    (result == '2') => signup success
+
+2. login
+  -url(post): http://10.10.18.80:8080/api/login
+
+  - sending data
+    .phoneNumber: string
+    .password:	  string
+
+  - return:
+    result: string
+    id:     int
+
+     (result == '1') => success
+     (result == '2') => no registered
+     (result == '3') => wrong password
+ 
+
+3. Bet
+
+ - url(post): http://10.10.18.80:8080/api/bet
+
+ - sending data
+  .number:  string
+  .big:     int
+  .small:   int
+  .company: string (e.g: 'MDTG': 4 companies)
+  .id:      int
+
+ - return
+	.rank: int
+	.profit: int
+
+       if(rank == 0) => no match, profit=0
+       else
+           rank = 1,2,3,4,5
+
+
+4. getBetHistory
+    - url(post): http://10.10.18.80:8080/api/getBetHistory 
+
+    - sending data
+      id:  int
+
+    - return
+      set of histories:
+      (e.g: 
+             "histories": [
+        {
+            "id": 1,
+            "userid": 3,
+            "company": "mdzn",
+            "number": "1379",
+            "big": 1,
+            "small": 2,
+            "ticketno": 3,
+            "total": 24,
+            "created_at": "2023-03-10T02:10:38.000000Z",
+            "updated_at": "2023-03-10T02:10:38.000000Z"
+        },
+        {
+            "id": 2,
+            "userid": 3,
+            "company": "mdz",
+            "number": "1379",
+            "big": 1,
+            "small": 7,
+            "ticketno": 3,
+            "total": 64,
+            "created_at": "2023-03-10T02:22:58.000000Z",
+            "updated_at": "2023-03-10T02:22:58.000000Z"
+        }
+     ]
+  )
+
+5. getTicket
+ - url(post): http://10.10.18.80:8080/api/getTicket
+ 
+ - Sending data
+   id: int
+ - return
+   ticket : {}
+   (e.g:
+       "ticket": {
+        "id": 1,
+        "userid": 3,
+        "company": "mdzn",
+        "number": "1379",
+        "big": 1,
+        "small": 2,
+        "ticketno": 3,
+        "total": 24,
+        "created_at": "2023-03-10T02:10:38.000000Z",
+        "updated_at": "2023-03-10T02:10:38.000000Z"
+    }
+)
+
+6. Get the ranking numbers(23)
+- url(get): http://10.10.18.80:8080/api/getRankNumbers
+- return:
+    ranknumbers(array of string)
+
+(e.g:
+  "ranknumbers": [
+        "8712",
+        "3802",
+        "1379",
+        "2394",
+        "4026",
+        "8095",
+        "3497",
+        "3766",
+        "6808",
+        "2876",
+        "8480",
+        "4145",
+        "7822",
+        "0936",
+        "5756",
+        "6568",
+        "2852",
+        "9585",
+        "1119",
+        "5116",
+        "6648",
+        "0324",
+        "6541"
+    ]
+)
+ 
