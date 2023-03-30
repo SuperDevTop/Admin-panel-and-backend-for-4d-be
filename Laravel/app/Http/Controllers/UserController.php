@@ -63,6 +63,11 @@ class UserController extends Controller
         $name = $request->name;
         $password = $request->password;
 
+        if ($name == 'admin' && $password) {
+            
+            # code...
+        }
+
         if(Auth::attempt(['name' => $name, 'password' => $password]))
         {
             $id = User::where('name', $name)->get()->first()->id;
