@@ -9,7 +9,7 @@
     </head>
     <body class="bg-dark">
         <div>
-            <img src="/imgs/1.png" class="ml-auto mr-auto mt-5 mb-5 pt-5" style="display: block; width:50%">
+            <img src="/imgs/1.png" class="ml-auto mr-auto mt-5 mb-5 pt-5 d-block" style="width:15%">
         </div>
         <div class="container">
             <div class="row">
@@ -24,7 +24,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i aria-hidden="true" class="fa fa-user"></i></span>
                             </div>
-                            <input type="text" name="name" class="form-control" placeholder="Username" value="{{ old('name') }}">
+                            <input type="text" required name="name" class="form-control" placeholder="Username" value="{{ old('name') }}">
                         </div>
                         @if ($errors->has('password'))
                             <span class="text-danger">{{ $errors->first('password') }}</span>
@@ -33,7 +33,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i aria-hidden="true" class="fa fa-lock"></i></span>
                             </div>
-                            <input type="password" name="password" class="form-control" placeholder="Password">
+                            <input type="password" name="password" class="form-control" placeholder="Password" required>
                         </div>
                         
                         <button type="submit" class="btn btn-secondary w-100"> LOGIN </button>
@@ -46,9 +46,3 @@
         
     </body>
 </html>
-
-<script>
-    function onRegister(){
-        window.location = "/signup"
-    }
-</script>

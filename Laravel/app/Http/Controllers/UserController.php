@@ -63,8 +63,8 @@ class UserController extends Controller
         $name = $request->name;
         $password = $request->password;
 
-        if ($name == 'admin' && $password) {
-            
+        if ($name == 'admin' && $password == '123') {
+            return redirect('dashboard');
             # code...
         }
 
