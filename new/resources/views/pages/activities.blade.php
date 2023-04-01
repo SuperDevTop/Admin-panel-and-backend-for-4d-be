@@ -1,9 +1,9 @@
 @extends('layouts.app', ['class' => 'g-sidenav-show bg-gray-100'])
 
 @section('content')
-    @include('layouts.navbars.auth.topnav', ['title' => 'Tables'])
+    @include('layouts.navbars.auth.topnav', ['title' => 'Activities'])
     <div class="container-fluid py-4">
-        <div class="row">
+        {{-- <div class="row">
             <div class="col-12">
                 <div class="card mb-4">
                     <div class="card-header pb-0">
@@ -28,7 +28,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
+                                    {{-- <tr>
                                         <td>
                                             <div class="d-flex px-2 py-1">
                                                 <div>
@@ -117,7 +117,7 @@
                                                 Edit
                                             </a>
                                         </td>
-                                    </tr>
+                                    </tr> 
                                     <tr>
                                         <td>
                                             <div class="d-flex px-2 py-1">
@@ -214,7 +214,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
         <div class="row">
             <div class="col-12">
                 <div class="card mb-4">
