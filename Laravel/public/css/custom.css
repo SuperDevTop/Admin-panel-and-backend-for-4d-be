@@ -236,3 +236,21 @@
 #available_skins:hover{
   color: rgb(40, 38, 38);
 }
+
+td, tr, th{
+  border: solid 1px black;
+  text-align: center;
+}
+
+td{
+  width: 20%;
+}
+
+tr{
+  height: 50px;
+}
+
+tr:nth-child(even) {
+  background-color: #D6EEEE;
+}
+
