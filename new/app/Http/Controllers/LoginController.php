@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Password;
+use App\Models\User;
 
 class LoginController extends Controller
 {
@@ -45,5 +46,38 @@ class LoginController extends Controller
         $request->session()->regenerateToken();
 
         return redirect('/login');
+    }
+
+    // App apis
+    public function customerLogin(Request $request)
+    {
+        $phoneNumber = $request->phoneNumber;
+        $password = $request->password;
+
+        if(Auth::attempt(['password' => $password, 'phoneNumber' => $phoneNumber]))
+        {
+            echo 2;
+            $id = User::where('phoneNumber', $phoneNumber)->get()->first()->id;
+
+            return response([
+                'result' => '1', //success
+                'id' => $id
+            ]);
+        }
+        else{
+            $count = User::where('phoneNumber', $phoneNumber)->get()->count();
+
+            if($count == 0)
+            {
+                return response([
+                    'result' => '2' // no registered (because the name doesn't exist)
+                ]);
+            }
+            else{
+                return response([
+                    'result' => '3' // wrong pwd-(name exists, but the wrong pwd)
+                ]);
+            }
+        }
     }
 }
