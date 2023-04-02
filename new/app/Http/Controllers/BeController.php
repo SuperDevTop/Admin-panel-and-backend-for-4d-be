@@ -84,4 +84,14 @@ class BeController extends Controller
             'ticket' => $ticket
         ]);
     }
+
+    public function rankNumbers()
+    {
+        # code...
+        $ranknumbers = RankNumber::all()->pluck('ranknumber')->toArray();
+
+        return response([
+           'ranknumbers' => $ranknumbers 
+        ]);
+    }
 }
