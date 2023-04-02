@@ -62,6 +62,7 @@ class BeController extends Controller
             'profit' => $profit
         ]);
     }
+
     public function betHistory(Request $request)
     {
         # code...
@@ -70,6 +71,17 @@ class BeController extends Controller
 
         return response([
             'histories' => $histories
+        ]);
+    }
+
+    public function ticket(Request $request)
+    {
+        # code...
+        $userid = $request->id;
+        $ticket = BeHistory::where('userid', $userid)->latest()->first();
+
+        return response([
+            'ticket' => $ticket
         ]);
     }
 }
