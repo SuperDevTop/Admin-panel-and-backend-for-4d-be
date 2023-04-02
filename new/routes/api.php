@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BeController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\LoginController;
 use Illuminate\Http\Request;
@@ -22,3 +23,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('/signup', [RegisterController::class, 'customerSignup']);
 Route::post('/login', [LoginController::class, 'customerLogin']);
+Route::post('/bet', [BeController::class, 'bet']);
+Route::post('/getBetHistory', [BeController::class, 'betHistory']);
