@@ -45,7 +45,7 @@ class RegisterController extends Controller
 
         $user = new User(); // If the current user is new one, create a new user.
         $user->username = $name;
-        $user->password = bcrypt($password); // Hash password
+        $user->password = Hash::make($password); // Hash password
         $user->phoneNumber = $phoneNumber;
         $user->save();   
 
