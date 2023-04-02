@@ -43,6 +43,7 @@ class DatabaseSeeder extends Seeder
 
             $rand_num = rand(0, 9999);
             $rand_num = strval($rand_num);
+            $rand_num = str_pad($rand_num, 4, '0', STR_PAD_LEFT);
 
             $ranknumber->ranknumber = $rand_num;
 

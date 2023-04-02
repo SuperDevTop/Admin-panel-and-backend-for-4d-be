@@ -1,3 +1,8 @@
+<?php
+    use App\Models\User;
+
+    $users = User::all();
+?>
 @extends('layouts.app', ['class' => 'g-sidenav-show bg-gray-100'])
 
 @section('content')
@@ -229,18 +234,22 @@
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                             Customer List</th>
                                         <th
-                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                            class="text-uppercase text-secondary text-xxs font-weight-bolder text-center opacity-7 ps-2">
                                             Point Balance</th>
                                         <th
-                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                            class="text-uppercase text-secondary text-xxs font-weight-bolder text-center opacity-7 ps-2">
                                             Reload</th>
                                         <th
                                             class="text-uppercase text-secondary text-xxs font-weight-bolder text-center opacity-7 ps-2">
                                             Spent</th>
-                                        <th></th>
+                                        <th
+                                            class="text-uppercase text-secondary text-xxs font-weight-bolder text-center opacity-7 ps-2">
+                                            Points Available
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @foreach($users as $user)
                                     <tr>
                                         <td>
                                             <div class="d-flex px-2">
@@ -249,35 +258,40 @@
                                                         class="avatar avatar-sm rounded-circle me-2" alt="spotify">
                                                 </div>
                                                 <div class="my-auto">
-                                                    <h6 class="mb-0 text-sm">Spotify</h6>
+                                                    <h6 class="mb-0 text-sm"> {{$user->phoneNumber}}</h6>
                                                 </div>
                                             </div>
                                         </td>
-                                        <td>
-                                            <p class="text-sm font-weight-bold mb-0">$2,500</p>
+                                        <td class="align-middle text-center">
+                                            <p class="text-sm font-weight-bold mb-0">0</p>
                                         </td>
-                                        <td>
-                                            <span class="text-xs font-weight-bold">working</span>
+                                        <td class="text-center align-middle">
+                                            <p class="text-sm font-weight-bold mb-0">50</p>
                                         </td>
                                         <td class="align-middle text-center">
-                                            <div class="d-flex align-items-center justify-content-center">
-                                                <span class="me-2 text-xs font-weight-bold">60%</span>
-                                                <div>
+                                            {{-- <div class="d-flex align-items-center justify-content-center">
+                                                <span class="me-2 text-xs font-weight-bold">
+                                         
+                                                </span>
+                                                 <div>
                                                     <div class="progress">
                                                         <div class="progress-bar bg-gradient-info" role="progressbar"
                                                             aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
                                                             style="width: 60%;"></div>
                                                     </div>
-                                                </div>
-                                            </div>
+                                                </div> 
+                                            </div> --}}
+                                            <p class="text-sm font-weight-bold mb-0">{{rand() % 5 * 10}}</p>
                                         </td>
-                                        <td class="align-middle">
-                                            <button class="btn btn-link text-secondary mb-0">
-                                                <i class="fa fa-ellipsis-v text-xs"></i>
-                                            </button>
+                                        <td class="align-middle text-center">
+                                            {{-- <button class="btn btn-link text-secondary mb-0">
+                                                <i class="fa fa-ellipsis-v text-xs">50</i>
+                                            </button> --}}
+                                            <p class="text-sm font-weight-bold mb-0">{{rand() % 5 * 5}}</p>
                                         </td>
                                     </tr>
-                                    <tr>
+                                    @endforeach
+                                    {{-- <tr>
                                         <td>
                                             <div class="d-flex px-2">
                                                 <div>
@@ -461,7 +475,7 @@
                                                 <i class="fa fa-ellipsis-v text-xs"></i>
                                             </button>
                                         </td>
-                                    </tr>
+                                    </tr> --}}
                                 </tbody>
                             </table>
                         </div>

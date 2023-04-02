@@ -19,6 +19,10 @@
     <link href="assets/css/nucleo-svg.css" rel="stylesheet" />
     <!-- CSS Files -->
     <link id="pagestyle" href="assets/css/argon-dashboard.css" rel="stylesheet" />
+    
+    {{-- Custom CSS --}}
+    <link href="/css/app.css" rel="stylesheet" />
+
 </head>
 
 <body class="{{ $class ?? '' }}">
