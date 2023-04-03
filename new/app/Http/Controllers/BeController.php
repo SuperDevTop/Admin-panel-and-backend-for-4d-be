@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\BeHistory;
+use App\Models\Limit;
 use App\Models\RankNumber;
 
 class BeController extends Controller
@@ -94,6 +95,46 @@ class BeController extends Controller
 
         return response([
            'ranknumbers' => $ranknumbers 
+        ]);
+    }
+
+    public function setLimit(Request $request)
+    {
+        # code...
+        $type = $request->type;
+        $value = $request->value;
+
+        $row = Limit::all()->first();
+
+        echo 3;
+
+        switch ($type) {
+            case 'big':
+                # code...
+                $row->big = $value;
+                break;
+            case 'small':
+                # code...
+                $row->small = $value;
+                break;
+            case 'sold_out_big':
+                # code...
+                $row->sold_out_big = $value;
+                break;
+            case 'sold_out_small':
+                # code...
+                $row->sold_out_small = $value;
+                break;
+            
+            default:
+                # code...
+                break;
+        }
+
+        $row->save();
+
+        return response([
+            'msg' => 'success'
         ]);
     }
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -54,4 +55,5 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/sign-up-static', [PageController::class, 'signup'])->name('sign-up-static'); 
 	Route::get('/{page}', [PageController::class, 'index'])->name('page');
 	Route::post('logout', [LoginController::class, 'logout'])->name('logout');
+	Route::post('/setLimit', [BeController::class, 'setLimit']);
 });

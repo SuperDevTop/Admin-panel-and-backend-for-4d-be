@@ -155,7 +155,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-8">
+            <div class="col-6">
                 <div class="card mb-4">  
                     <div class="card-header pb-0">
                         <h6>Owner Acceptable Limit</h6>
@@ -187,6 +187,10 @@
                                         <td class="align-middle text-center">                                        
                                             <p class="font-weight-bold mb-0">{{ $small }}</p>
                                         </td>
+                                        <td class="align-middle text-center" style="border-collapse: collapse">
+                                                <a class="btn btn-link text-dark px-3 mb-0 edit_btn"><i
+                                                        class="fas fa-pencil-alt text-dark me-2" aria-hidden="true"></i>Edit</a>
+                                        </td>
                                     </tr>                                    
                                 </tbody>
                             </table>
@@ -194,7 +198,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-12">
+            <div class="col-6">
                 <div class="card mb-4">  
                     <div class="card-header pb-0">
                         <h6>Betting Limit</h6>
@@ -211,6 +215,10 @@
                                         <td class="align-middle text-center">                                        
                                             <p class="font-weight-bold mb-0">{{ $sold_out_big }}</p>
                                         </td>
+                                        <td class="align-middle text-center" style="border-collapse: collapse">
+                                            <a class="btn btn-link text-dark px-3 mb-0 edit_btn"><i
+                                                    class="fas fa-pencil-alt text-dark me-2" aria-hidden="true"></i>Edit</a>
+                                        </td>
                                     </tr>                                    
                                     <tr>
                                         <td class="align-middle text-center">
@@ -219,6 +227,10 @@
                                        
                                         <td class="align-middle text-center">                                        
                                             <p class="font-weight-bold mb-0">{{ $sold_out_small }}</p>
+                                        </td>
+                                        <td class="align-middle text-center" style="border-collapse: collapse">
+                                            <a class="btn btn-link text-dark px-3 mb-0 edit_btn"><i
+                                                    class="fas fa-pencil-alt text-dark me-2" aria-hidden="true"></i>Edit</a>
                                         </td>
                                     </tr>                                    
                                 </tbody>
@@ -244,21 +256,39 @@
                     $(this).html('<a class="btn btn-link text-dark px-3 mb-0 edit_btn"><i class="fas fa-pencil-alt text-dark me-2" aria-hidden="true"></i>Edit</a>')
                     $(this).parent().siblings().eq(1).attr('contenteditable', false)
 
-                    var val = $(this).parent().siblings().eq(1).text()
-                    alert(val)
+                    var val = $(this).parent().siblings().eq(1).children('p').text()
 
-                    var type = 'small'
-                    if($(this).parent().siblings().child('p').text() == "Set limit -Big")
-                    {
-                        type = 'big'
-                    }
+                    var type = ''
+                    var text = $(this).parent().siblings().eq(0).children('p').text()
 
+                    switch (text) {
+                        case "Set limit -Big":
+                            type = 'big'
+                            break;
+                        case "Set limit -Small":
+                            type = 'small'
+                            break;
+                        case "Sold out limit -Big":
+                            type = 'sold_out_big'
+                            break;
+                        case "Sold out limit -Small":
+                            type = 'sold_out_small'
+                            break;
+                        
+                        default:
+                            break;
+                    }   
+                    
                     $.ajax({
                         type: 'POST',
                         url: '/setLimit',
                         data: {
-                            'type': 'big',
+                            'type': type,
                             'value': val
+                        },
+                        headers: {'x-csrf-token': '{{csrf_token()}}'},
+                        success:function(data){
+                            console.log(data)
                         }
                     })  
                 }
