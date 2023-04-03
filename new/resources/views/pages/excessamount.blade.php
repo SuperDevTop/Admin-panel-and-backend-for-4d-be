@@ -7,6 +7,12 @@
     $ranknumbers = RankNumber::all()->pluck('ranknumber')->toArray();
     $excessAmount = [];
 
+    $limit = Limit::all()->first();
+    $limit_big = $limit->big;
+    $limit_small = $limit->small;
+    $limit_sold_out_big = $limit->sold_out_big;
+    $limit_sold_out_small = $limit->sold_out_small;
+
     $total_big_excess = 0;
     $total_small_excess = 0;
 
@@ -21,11 +27,21 @@
             continue;
         }
 
-        $excess_big = $big - 50;
-        $excess_small = $small - 50;
+        $excess_big = $big - $limit_big;
+        $excess_small = $small - $limit_small;
 
         $excess_big = $excess_big < 0 ? 0 : $excess_big;
         $excess_small = $excess_small < 0 ? 0 : $excess_small;
+
+        if($big > $limit_sold_out_big)
+        {
+            $excess_big = 0;
+        }
+
+        if($small > $limit_sold_out_small)
+        {
+            $excess_small = 0;
+        }
 
         if ($excess_big || $excess_small) {
             # code...

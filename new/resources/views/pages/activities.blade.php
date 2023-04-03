@@ -7,6 +7,12 @@
     $ranknumbers = RankNumber::all()->pluck('ranknumber')->toArray();
     $beAnalysis = [];
 
+    $limit = Limit::all()->first();
+    $limit_big = $limit->big;
+    $limit_small = $limit->small;
+    $limit_sold_out_big = $limit->sold_out_big;
+    $limit_sold_out_small = $limit->sold_out_small;
+
     $total_big = 0;
     $total_small = 0;
     $total_big_excess = 0;
@@ -23,11 +29,21 @@
             continue;
         }
 
-        $excess_big = $big - 50;
-        $excess_small = $small - 50;
+        $excess_big = $big - $limit_big;
+        $excess_small = $small - $limit_small;
 
         $excess_big = $excess_big < 0 ? 0 : $excess_big;
         $excess_small = $excess_small < 0 ? 0 : $excess_small;
+
+        if($big > $limit_sold_out_big)
+        {
+            $excess_big = 0;
+        }
+
+        if($small > $limit_sold_out_small)
+        {
+            $excess_small = 0;
+        }
 
         $ele = new stdClass();
         $ele->total_customer = $total_customer;
@@ -45,11 +61,7 @@
         $total_small_excess += $excess_small;
     }
 
-    $limit = Limit::all()->first();
-    $big = $limit->big;
-    $small = $limit->small;
-    $sold_out_big = $limit->sold_out_big;
-    $sold_out_small = $limit->sold_out_small;
+    
 ?>
 @extends('layouts.app', ['class' => 'g-sidenav-show bg-gray-100'])
 
@@ -99,7 +111,7 @@
                                             <p class="font-weight-bold mb-0">{{  $ele->betno }}</p>
                                         </td>
                                         
-                                        @if($ele->big > $sold_out_big)
+                                        @if($ele->big > $limit_sold_out_big)
                                         <td class="text-center align-middle text-danger">
                                             <p class="font-weight-bold mb-0">{{ $ele->big }}</p>
                                         </td>
@@ -109,7 +121,7 @@
                                         </td>
                                         @endif
                                         
-                                        @if($ele->small > $sold_out_small)
+                                        @if($ele->small > $limit_sold_out_small)
                                         <td class="align-middle text-center text-danger">                                    
                                             <p class="font-weight-bold mb-0">{{ $ele->small }}</p>
                                         </td>
@@ -170,7 +182,7 @@
                                         </td>
                                        
                                         <td class="align-middle text-center">                                        
-                                            <p class=" font-weight-bold mb-0">{{ $big }}</p>
+                                            <p class=" font-weight-bold mb-0 value">{{ $limit_big }}</p>
                                         </td>
                                         <td class="align-middle text-center" style="border-collapse: collapse">
                                             {{-- <div class="ms-auto">                                          --}}
@@ -185,7 +197,7 @@
                                         </td>
                                        
                                         <td class="align-middle text-center">                                        
-                                            <p class="font-weight-bold mb-0">{{ $small }}</p>
+                                            <p class="font-weight-bold mb-0 value">{{ $limit_small }}</p>
                                         </td>
                                         <td class="align-middle text-center" style="border-collapse: collapse">
                                                 <a class="btn btn-link text-dark px-3 mb-0 edit_btn"><i
@@ -213,7 +225,7 @@
                                         </td>
                                        
                                         <td class="align-middle text-center">                                        
-                                            <p class="font-weight-bold mb-0">{{ $sold_out_big }}</p>
+                                            <p class="font-weight-bold mb-0 value">{{ $limit_sold_out_big }}</p>
                                         </td>
                                         <td class="align-middle text-center" style="border-collapse: collapse">
                                             <a class="btn btn-link text-dark px-3 mb-0 edit_btn"><i
@@ -226,7 +238,7 @@
                                         </td>
                                        
                                         <td class="align-middle text-center">                                        
-                                            <p class="font-weight-bold mb-0">{{ $sold_out_small }}</p>
+                                            <p class="font-weight-bold mb-0 value">{{ $limit_sold_out_small }}</p>
                                         </td>
                                         <td class="align-middle text-center" style="border-collapse: collapse">
                                             <a class="btn btn-link text-dark px-3 mb-0 edit_btn"><i
@@ -250,7 +262,8 @@
                 if($(this).text().replace(/\s/g, '') == 'Edit')
                 {
                     $(this).html('<a class="btn btn-link text-dark px-3 mb-0 edit_btn"><i class="fas fa-save text-dark me-2" aria-hidden="true"></i>Save</a>')
-                    $(this).parent().siblings().eq(1).attr('contenteditable', true)
+                    $(this).parent().siblings().eq(1).children('p').attr('contenteditable', true)
+                    $(this).parent().siblings().eq(1).children('p').focus()
                 }
                 else{
                     $(this).html('<a class="btn btn-link text-dark px-3 mb-0 edit_btn"><i class="fas fa-pencil-alt text-dark me-2" aria-hidden="true"></i>Edit</a>')
@@ -293,6 +306,10 @@
                     })  
                 }
             })
+
+            // $('.value').focusout(function() {
+            //     $(this).parent().siblings().eq(1).children().html('<a class="btn btn-link text-dark px-3 mb-0 edit_btn"><i class="fas fa-pencil-alt text-dark me-2" aria-hidden="true"></i>Edit</a>')             
+            // })
         })
     </script>
 @endsection
