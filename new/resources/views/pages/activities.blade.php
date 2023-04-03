@@ -1,7 +1,47 @@
 <?php
     use App\Models\User;
+    use App\Models\RankNumber;
+    use App\Models\BeHistory;
 
-    $users = User::all();
+    $ranknumbers = RankNumber::all()->pluck('ranknumber')->toArray();
+    $beAnalysis = [];
+
+    foreach($ranknumbers as $num)
+    {
+        $big = BeHistory::where('number', $num)->sum('big');
+        $small = BeHistory::where('number', $num)->sum('small');
+        $total_customer = BeHistory::where('number', $num)->count();
+
+        if(!$total_customer)
+        {
+            continue;
+        }
+
+        $excess_big = $big - 50;
+        $excess_small = $small - 50;
+
+        $excess_big = $excess_big < 0 ? 0 : $excess_big;
+        $excess_small = $excess_small < 0 ? 0 : $excess_small;
+
+        $ele = new stdClass();
+        $ele->total_customer = $total_customer;
+        $ele->betno = $num;
+        $ele->big = $big;
+        $ele->small = $small;
+        $ele->excess_big = $excess_big;
+        $ele->excess_small = $excess_small;
+
+        array_push($beAnalysis, $ele
+        //  {
+        //     'total_customer'=> $total_customer,
+        //     'betno'=> $num,
+        //     'big'=> $big,
+        //     'small'=> $small,
+        //     'excess_big'=> $excess_big,
+        //     'excess_small'=> $excess_small,
+        // }
+    );
+    }
 ?>
 @extends('layouts.app', ['class' => 'g-sidenav-show bg-gray-100'])
 
@@ -42,22 +82,25 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($users as $user)
+                                    @foreach($beAnalysis as $ele)
                                     <tr>
                                         <td class="align-middle text-center">
-                                            <p class="text-sm font-weight-bold mb-0"> {{$user->phoneNumber}} </p>                
+                                            <p class="text-sm font-weight-bold mb-0"> {{ $ele->total_customer }} </p>                
                                         </td>
                                         <td class="align-middle text-center">
-                                            <p class="text-sm font-weight-bold mb-0">0</p>
+                                            <p class="text-sm font-weight-bold mb-0">{{  $ele->betno  }}</p>
                                         </td>
                                         <td class="text-center align-middle">
-                                            <p class="text-sm font-weight-bold mb-0">50</p>
+                                            <p class="text-sm font-weight-bold mb-0">{{ $ele->big }}</p>
                                         </td>
                                         <td class="align-middle text-center">                                    
-                                            <p class="text-sm font-weight-bold mb-0">{{rand() % 5 * 10}}</p>
+                                            <p class="text-sm font-weight-bold mb-0">{{ $ele->small }}</p>
                                         </td>
                                         <td class="align-middle text-center">                                        
-                                            <p class="text-sm font-weight-bold mb-0">{{rand() % 5 * 5}}</p>
+                                            <p class="text-sm font-weight-bold mb-0">{{ $ele->excess_big }}</p>
+                                        </td>
+                                        <td class="align-middle text-center">                                        
+                                            <p class="text-sm font-weight-bold mb-0">{{ $ele->excess_small }}</p>
                                         </td>
                                     </tr>
                                     @endforeach
