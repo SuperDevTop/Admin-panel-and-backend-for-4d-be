@@ -60,7 +60,7 @@
             <div class="col-12">
                 <div class="card mb-4">
                     <div class="card-header pb-0">
-                        <h6>Admin activities</h6>
+                        <h6>Admin ACTIVITIES</h6>
                     </div>
                     <div class="card-body px-0 pt-0 pb-2">
                         <div class="table-responsive p-0">
@@ -155,7 +155,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-6">
+            <div class="col-8">
                 <div class="card mb-4">  
                     <div class="card-header pb-0">
                         <h6>Owner Acceptable Limit</h6>
@@ -171,6 +171,12 @@
                                        
                                         <td class="align-middle text-center">                                        
                                             <p class=" font-weight-bold mb-0">{{ $big }}</p>
+                                        </td>
+                                        <td class="align-middle text-center" style="border-collapse: collapse">
+                                            {{-- <div class="ms-auto">                                          --}}
+                                                <a class="btn btn-link text-dark px-3 mb-0 edit_btn"><i
+                                                        class="fas fa-pencil-alt text-dark me-2" aria-hidden="true"></i>Edit</a>
+                                            {{-- </div> --}}
                                         </td>
                                     </tr>                                    
                                     <tr>
@@ -188,7 +194,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-6">
+            <div class="col-12">
                 <div class="card mb-4">  
                     <div class="card-header pb-0">
                         <h6>Betting Limit</h6>
@@ -224,4 +230,39 @@
         </div>
         @include('layouts.footers.auth.footer')
     </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $('.edit_btn').click(function(){
+                
+                if($(this).text().replace(/\s/g, '') == 'Edit')
+                {
+                    $(this).html('<a class="btn btn-link text-dark px-3 mb-0 edit_btn"><i class="fas fa-save text-dark me-2" aria-hidden="true"></i>Save</a>')
+                    $(this).parent().siblings().eq(1).attr('contenteditable', true)
+                }
+                else{
+                    $(this).html('<a class="btn btn-link text-dark px-3 mb-0 edit_btn"><i class="fas fa-pencil-alt text-dark me-2" aria-hidden="true"></i>Edit</a>')
+                    $(this).parent().siblings().eq(1).attr('contenteditable', false)
+
+                    var val = $(this).parent().siblings().eq(1).text()
+                    alert(val)
+
+                    var type = 'small'
+                    if($(this).parent().siblings().child('p').text() == "Set limit -Big")
+                    {
+                        type = 'big'
+                    }
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '/setLimit',
+                        data: {
+                            'type': 'big',
+                            'value': val
+                        }
+                    })  
+                }
+            })
+        })
+    </script>
 @endsection
