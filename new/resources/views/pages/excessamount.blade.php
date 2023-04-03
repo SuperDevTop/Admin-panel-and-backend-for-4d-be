@@ -1,7 +1,44 @@
 <?php
     use App\Models\User;
+    use App\Models\RankNumber;
+    use App\Models\BeHistory;
+    use App\Models\Limit;
 
-    $users = User::all();
+    $ranknumbers = RankNumber::all()->pluck('ranknumber')->toArray();
+    $excessAmount = [];
+
+    $total_big_excess = 0;
+    $total_small_excess = 0;
+
+    foreach($ranknumbers as $num)
+    {
+        $big = BeHistory::where('number', $num)->sum('big');
+        $small = BeHistory::where('number', $num)->sum('small');
+        $total_customer = BeHistory::where('number', $num)->count();
+
+        if(!$total_customer)
+        {
+            continue;
+        }
+
+        $excess_big = $big - 50;
+        $excess_small = $small - 50;
+
+        $excess_big = $excess_big < 0 ? 0 : $excess_big;
+        $excess_small = $excess_small < 0 ? 0 : $excess_small;
+
+        if ($excess_big || $excess_small) {
+            # code...
+            $ele = new stdClass();
+            $ele->betno = $num;
+            $ele->excess_big = $excess_big;
+            $ele->excess_small = $excess_small;
+            array_push($excessAmount, $ele);
+
+            $total_big_excess += $excess_big;
+            $total_small_excess += $excess_small;
+        }
+    }
 ?>
 @extends('layouts.app', ['class' => 'g-sidenav-show bg-gray-100'])
 
@@ -31,19 +68,30 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($users as $user)
+                                    @foreach($excessAmount as $ele)
                                     <tr>
                                         <td class="align-middle text-center">
-                                            <p class="text-sm font-weight-bold mb-0"> {{$user->phoneNumber}} </p>                
+                                            <p class="font-weight-bold mb-0"> {{ $ele->betno }} </p>                
                                         </td>
                                         <td class="align-middle text-center">
-                                            <p class="text-sm font-weight-bold mb-0">0</p>
+                                            <p class="font-weight-bold mb-0">{{ $ele->excess_big }}</p>
                                         </td>
                                         <td class="text-center align-middle">
-                                            <p class="text-sm font-weight-bold mb-0">50</p>
+                                            <p class="font-weight-bold mb-0">{{ $ele->excess_small }}</p>
                                         </td>                                        
                                     </tr>
                                     @endforeach
+                                    <tr class="text-info">
+                                        <td class="align-middle text-center">
+                                            <p class="font-weight-bold mb-0"> <strong>Total </p>                
+                                        </td>
+                                        <td class="align-middle text-center">
+                                            <p class="font-weight-bold mb-0">{{ $total_big_excess }}</p>
+                                        </td>
+                                        <td class="text-center align-middle">
+                                            <p class="font-weight-bold mb-0">{{ $total_small_excess }}</p>
+                                        </td>                                        
+                                    </tr>
                                     
                                 </tbody>
                             </table>

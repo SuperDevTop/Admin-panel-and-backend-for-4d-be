@@ -81,11 +81,11 @@
                                             Small</th>
                                         <th
                                             class="text-uppercase text-secondary text-md font-weight-bolder text-center opacity-7 ps-2">
-                                            Excess Amount
+                                            Excess Amount(Big)
                                         </th>
                                         <th
                                             class="text-uppercase text-secondary text-md font-weight-bolder text-center opacity-7 ps-2">
-                                            Excess Amount
+                                            Excess Amount(Small)
                                         </th>
                                     </tr>
                                 </thead>
@@ -130,7 +130,7 @@
                                     
                                     <tr class="text-success">
                                         <td class="align-middle text-center">
-                                            <p class="text-lg font-weight-bold mb-0">Total</p>                
+                                            <p class="text-lg font-weight-bold mb-0"><strong>Total</p>                
                                         </td>
                                         <td class="align-middle text-center">
                                             <p class="text-lg font-weight-bold mb-0"></p>
