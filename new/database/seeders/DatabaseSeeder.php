@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Limit;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -49,6 +50,13 @@ class DatabaseSeeder extends Seeder
 
             $ranknumber->save();
         }
+
+        $limit = new Limit();
+        $limit->big = 50;
+        $limit->small = 50;
+        $limit->sold_out_big = 100;
+        $limit->sold_out_small = 100;
+        $limit->save();
 
     }
 }

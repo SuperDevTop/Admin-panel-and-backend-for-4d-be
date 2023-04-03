@@ -2,9 +2,15 @@
     use App\Models\User;
     use App\Models\RankNumber;
     use App\Models\BeHistory;
+    use App\Models\Limit;
 
     $ranknumbers = RankNumber::all()->pluck('ranknumber')->toArray();
     $beAnalysis = [];
+
+    $total_big = 0;
+    $total_small = 0;
+    $total_big_excess = 0;
+    $total_small_excess = 0;
 
     foreach($ranknumbers as $num)
     {
@@ -31,17 +37,19 @@
         $ele->excess_big = $excess_big;
         $ele->excess_small = $excess_small;
 
-        array_push($beAnalysis, $ele
-        //  {
-        //     'total_customer'=> $total_customer,
-        //     'betno'=> $num,
-        //     'big'=> $big,
-        //     'small'=> $small,
-        //     'excess_big'=> $excess_big,
-        //     'excess_small'=> $excess_small,
-        // }
-    );
+        array_push($beAnalysis, $ele);
+
+        $total_big += $big;
+        $total_small += $small;
+        $total_big_excess += $excess_big;
+        $total_small_excess += $excess_small;
     }
+
+    $limit = Limit::all()->first();
+    $big = $limit->big;
+    $small = $limit->small;
+    $sold_out_big = $limit->sold_out_big;
+    $sold_out_small = $limit->sold_out_small;
 ?>
 @extends('layouts.app', ['class' => 'g-sidenav-show bg-gray-100'])
 
@@ -85,25 +93,61 @@
                                     @foreach($beAnalysis as $ele)
                                     <tr>
                                         <td class="align-middle text-center">
-                                            <p class="text-sm font-weight-bold mb-0"> {{ $ele->total_customer }} </p>                
+                                            <p class="font-weight-bold mb-0"> {{ $ele->total_customer }} </p>                
                                         </td>
                                         <td class="align-middle text-center">
-                                            <p class="text-sm font-weight-bold mb-0">{{  $ele->betno  }}</p>
+                                            <p class="font-weight-bold mb-0">{{  $ele->betno }}</p>
                                         </td>
+                                        
+                                        @if($ele->big > $sold_out_big)
+                                        <td class="text-center align-middle text-danger">
+                                            <p class="font-weight-bold mb-0">{{ $ele->big }}</p>
+                                        </td>
+                                        @else
                                         <td class="text-center align-middle">
-                                            <p class="text-sm font-weight-bold mb-0">{{ $ele->big }}</p>
+                                            <p class="font-weight-bold mb-0">{{ $ele->big }}</p>
                                         </td>
+                                        @endif
+                                        
+                                        @if($ele->small > $sold_out_small)
+                                        <td class="align-middle text-center text-danger">                                    
+                                            <p class="font-weight-bold mb-0">{{ $ele->small }}</p>
+                                        </td>
+                                        @else
                                         <td class="align-middle text-center">                                    
-                                            <p class="text-sm font-weight-bold mb-0">{{ $ele->small }}</p>
+                                            <p class="font-weight-bold mb-0">{{ $ele->small }}</p>
+                                        </td>
+                                        @endif
+
+                                        <td class="align-middle text-center">                                        
+                                            <p class="font-weight-bold mb-0">{{ $ele->excess_big }}</p>
                                         </td>
                                         <td class="align-middle text-center">                                        
-                                            <p class="text-sm font-weight-bold mb-0">{{ $ele->excess_big }}</p>
-                                        </td>
-                                        <td class="align-middle text-center">                                        
-                                            <p class="text-sm font-weight-bold mb-0">{{ $ele->excess_small }}</p>
+                                            <p class="font-weight-bold mb-0">{{ $ele->excess_small }}</p>
                                         </td>
                                     </tr>
                                     @endforeach
+                                    
+                                    <tr class="text-success">
+                                        <td class="align-middle text-center">
+                                            <p class="text-lg font-weight-bold mb-0">Total</p>                
+                                        </td>
+                                        <td class="align-middle text-center">
+                                            <p class="text-lg font-weight-bold mb-0"></p>
+                                        </td>
+                                        <td class="text-center align-middle">
+                                            <p class="text-lg font-weight-bold mb-0">{{ $total_big }}</p>
+                                        </td>
+                                        <td class="align-middle text-center">                                    
+                                            <p class="text-lg font-weight-bold mb-0">{{ $total_small }}</p>
+                                        </td>
+                                        <td class="align-middle text-center">                                        
+                                            <p class="text-lg font-weight-bold mb-0">{{ $total_big_excess }}</p>
+                                        </td>
+                                        <td class="align-middle text-center">                                        
+                                            <p class="text-lg font-weight-bold mb-0">{{ $total_small_excess }}</p>
+                                        </td>
+                                    </tr>
                                     
                                 </tbody>
                             </table>
@@ -122,20 +166,20 @@
                                 <tbody>
                                     <tr>
                                         <td class="align-middle text-center">
-                                            <p class="text-sm font-weight-bold mb-0">Set limit -Big</p>                
+                                            <p class="font-weight-bold mb-0">Set limit -Big</p>                
                                         </td>
                                        
                                         <td class="align-middle text-center">                                        
-                                            <p class="text-sm font-weight-bold mb-0">50</p>
+                                            <p class=" font-weight-bold mb-0">{{ $big }}</p>
                                         </td>
                                     </tr>                                    
                                     <tr>
                                         <td class="align-middle text-center">
-                                            <p class="text-sm font-weight-bold mb-0">Set limit -Small</p>                
+                                            <p class=" font-weight-bold mb-0">Set limit -Small</p>                
                                         </td>
                                        
                                         <td class="align-middle text-center">                                        
-                                            <p class="text-sm font-weight-bold mb-0">50</p>
+                                            <p class="font-weight-bold mb-0">{{ $small }}</p>
                                         </td>
                                     </tr>                                    
                                 </tbody>
@@ -155,20 +199,20 @@
                                 <tbody>
                                     <tr>
                                         <td class="align-middle text-center">
-                                            <p class="text-sm font-weight-bold mb-0">Sold out limit -Big</p>                
+                                            <p class="font-weight-bold mb-0">Sold out limit -Big</p>                
                                         </td>
                                        
                                         <td class="align-middle text-center">                                        
-                                            <p class="text-sm font-weight-bold mb-0">100</p>
+                                            <p class="font-weight-bold mb-0">{{ $sold_out_big }}</p>
                                         </td>
                                     </tr>                                    
                                     <tr>
                                         <td class="align-middle text-center">
-                                            <p class="text-sm font-weight-bold mb-0">Sold out limit -Small</p>                
+                                            <p class="font-weight-bold mb-0">Sold out limit -Small</p>                
                                         </td>
                                        
                                         <td class="align-middle text-center">                                        
-                                            <p class="text-sm font-weight-bold mb-0">100</p>
+                                            <p class="font-weight-bold mb-0">{{ $sold_out_small }}</p>
                                         </td>
                                     </tr>                                    
                                 </tbody>

@@ -23,16 +23,18 @@ class BeController extends Controller
 
         $behistory->save();
 
-        $rank = RankNumber::where('ranknumber', $request->number)->first()->rank;
+        $match = RankNumber::where('ranknumber', $request->number)->first();
         $profit = 0;
 
-        if(!$rank)
+        if(!$match)
         {
             return response([
                 'rank' => 0,
                 'profit' => $profit
             ]);
         }
+
+        $rank = $match->rank;
 
         switch($rank)
         {
