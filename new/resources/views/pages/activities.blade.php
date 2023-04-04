@@ -299,9 +299,10 @@
                             'type': type,
                             'value': val
                         },
-                        headers: {'x-csrf-token': '{{csrf_token()}}'},
+                        headers: {'x-csrf-token': '{{ csrf_token() }}'},
                         success:function(data){
                             console.log(data)
+                            window.location.reload()
                         }
                     })  
                 }

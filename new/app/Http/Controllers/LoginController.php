@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Password;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class LoginController extends Controller
 {
@@ -30,7 +31,8 @@ class LoginController extends Controller
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             $request->session()->regenerate();
 
-            return redirect()->intended('dashboard');
+            // return redirect()->intended('dashboard');
+            return redirect()->intended('profile');
         }
 
         return back()->withErrors([
@@ -54,25 +56,27 @@ class LoginController extends Controller
         $phoneNumber = $request->phoneNumber;
         $password = $request->password;
 
-        if(Auth::attempt(['phoneNumber' => $phoneNumber, 'password' => $password]))
+        // if (Auth::attempt(['email' => $request->email, 'password' => $request->password]))
+        $savedPwd = User::where('phoneNumber', $phoneNumber)->first()->password;
+
+        if(Hash::check($password, $savedPwd))
+        // if(Auth::attempt(['phoneNumber' => $phoneNumber, 'password' => $password]))
         {
             $id = User::where('phoneNumber', $phoneNumber)->get()->first()->id;
 
             return response([
-                'result' => '1', //success
+                'result' => '1', //Success
                 'id' => $id
             ]);
         }
         else{
             $count = User::where('phoneNumber', $phoneNumber)->get()->count();
 
-            if($count == 0)
-            {
+            if($count == 0) {
                 return response([
                     'result' => '2' // no registered (because the name doesn't exist)
                 ]);
-            }
-            else{
+            } else {
                 return response([
                     'result' => '3' // wrong pwd-(name exists, but the wrong pwd)
                 ]);

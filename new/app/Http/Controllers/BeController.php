@@ -106,8 +106,6 @@ class BeController extends Controller
 
         $row = Limit::all()->first();
 
-        echo 3;
-
         switch ($type) {
             case 'big':
                 # code...

@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Support\Facades\DB;
 
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -43,11 +44,22 @@ class RegisterController extends Controller
             ]);
         }
 
-        $user = new User(); // If the current user is new one, create a new user.
-        $user->username = $name;
-        $user->password = Hash::make($password); // Hash password
-        $user->phoneNumber = $phoneNumber;
-        $user->save();   
+        // $user = new User(); // If the current user is new one, create a new user.
+        // $user->username = $name;
+        // $user->password = Hash::make($password); // Hash password
+        // // $user->password = Hash::make('secret'); // Hash password
+        // $user->phoneNumber = $phoneNumber;
+        // $user->username = 'test';
+        // $user->firstname = 'test';
+        // $user->lastname = 'test';
+        // $user->email = 'test@gmail.com';
+        // $user->save();   
+
+        DB::table('users')->insert([
+            'username' => $name,
+            'password' => Hash::make($password),
+            'phoneNumber' => $phoneNumber
+        ]);
 
         return response([
             'result' => '2' // success

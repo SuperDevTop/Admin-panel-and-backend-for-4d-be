@@ -76,7 +76,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="example-text-input" class="form-control-label">Email address</label>
+                                        <label for="example-text-input" class="form-control-label">Email</label>
                                         <input class="form-control" type="email" name="email" value="{{ old('email', auth()->user()->email) }}">
                                     </div>
                                 </div>
@@ -94,7 +94,7 @@
                                 </div>
                             </div>
                             <hr class="horizontal dark">
-                            <p class="text-uppercase text-sm">Contact Information</p>
+                            {{-- <p class="text-uppercase text-sm">Contact Information</p>
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
@@ -132,7 +132,7 @@
                                             value="{{ old('about', auth()->user()->about) }}">
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
                         </div>
                     </form>
                 </div>
