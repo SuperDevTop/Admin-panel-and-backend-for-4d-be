@@ -31,11 +31,11 @@ class RegisterController extends Controller
     // App apis
     public function customerSignup(Request $request)
     {
-        $name = $request->name;
+        // $name = $request->name;
         $phoneNumber = $request->phoneNumber;
         $password = $request->password;
 
-        $name_count = User::where('username', $name)->get()->count();
+        $name_count = User::where('phoneNumber', $phoneNumber)->get()->count();
 
         if($name_count != 0)
         {
@@ -44,19 +44,8 @@ class RegisterController extends Controller
             ]);
         }
 
-        // $user = new User(); // If the current user is new one, create a new user.
-        // $user->username = $name;
-        // $user->password = Hash::make($password); // Hash password
-        // // $user->password = Hash::make('secret'); // Hash password
-        // $user->phoneNumber = $phoneNumber;
-        // $user->username = 'test';
-        // $user->firstname = 'test';
-        // $user->lastname = 'test';
-        // $user->email = 'test@gmail.com';
-        // $user->save();   
-
         DB::table('users')->insert([
-            'username' => $name,
+            'username' => 'name',
             'password' => Hash::make($password),
             'phoneNumber' => $phoneNumber
         ]);
