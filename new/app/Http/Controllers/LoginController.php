@@ -56,11 +56,7 @@ class LoginController extends Controller
         $phoneNumber = $request->phoneNumber;
         $password = $request->password;
 
-        // if (Auth::attempt(['email' => $request->email, 'password' => $request->password]))
-        $savedPwd = User::where('phoneNumber', $phoneNumber)->first()->password;
-
-        if(Hash::check($password, $savedPwd))
-        // if(Auth::attempt(['phoneNumber' => $phoneNumber, 'password' => $password]))
+        if(Auth::attempt(['phoneNumber' => $phoneNumber, 'password' => $password]))
         {
             $id = User::where('phoneNumber', $phoneNumber)->get()->first()->id;
 
