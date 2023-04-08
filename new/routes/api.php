@@ -27,3 +27,4 @@ Route::post('/bet', [BeController::class, 'bet']);
 Route::post('/getBetHistory', [BeController::class, 'betHistory']);
 Route::post('/getTicket', [BeController::class, 'ticket']);
 Route::get('/getRankNumbers', [BeController::class, 'rankNumbers']);
+Route::get('/getTime', [BeController::class, 'getTime']);

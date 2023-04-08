@@ -195,7 +195,7 @@ pwd: 123
             "updated_at": "2023-04-08T15:35:54.000000Z"
         }
     ],
-    
+
     "nt": 960
 )
 
@@ -232,3 +232,15 @@ pwd: 123
     ]
 )
  
+
+7: getTime
+- url(get): http://10.10.18.80:8080/api/getTime
+- return:
+    time: string
+
+-e:g:
+    {
+        "time": "2023-04-08 18:26:57"
+    }
+
+

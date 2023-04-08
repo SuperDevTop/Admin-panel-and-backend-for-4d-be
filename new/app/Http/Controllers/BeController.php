@@ -45,9 +45,8 @@ class BeController extends Controller
         $match = RankNumber::where('ranknumber', $request->number)->first();
         $profit = 0;
 
-        if(!$match)
-        {
-            return response([
+        if(!$match) {
+            return response ([
                 'rank' => 0,
                 'profit' => $profit
             ]);
@@ -78,7 +77,7 @@ class BeController extends Controller
                 break;
         }
 
-        return response([
+        return response ([
             'rank' => $rank,
             'profit' => $profit
         ]);
@@ -108,7 +107,7 @@ class BeController extends Controller
 
         $nt = $ticket->sum('total');
 
-        return response([
+        return response ([
             'ticket' => $ticket,
             'nt' => $nt
         ]);
@@ -133,25 +132,23 @@ class BeController extends Controller
         $row = Limit::all()->first();
 
         switch ($type) {
-            case 'big':
-                # code...
+            case 'big':                
                 $row->big = $value;
                 break;
-            case 'small':
-                # code...
+
+            case 'small':                
                 $row->small = $value;
                 break;
-            case 'sold_out_big':
-                # code...
+
+            case 'sold_out_big':                
                 $row->sold_out_big = $value;
                 break;
+
             case 'sold_out_small':
-                # code...
                 $row->sold_out_small = $value;
                 break;
             
-            default:
-                # code...
+            default:                
                 break;
         }
 
@@ -159,6 +156,15 @@ class BeController extends Controller
 
         return response([
             'msg' => 'success'
+        ]);
+    }
+
+    public function getTime()
+    {
+        $time = date('Y-m-d H:i:s');
+
+        return response([
+            'time'=> $time
         ]);
     }
 }
