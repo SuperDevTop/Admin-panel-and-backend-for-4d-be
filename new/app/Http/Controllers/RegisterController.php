@@ -31,7 +31,6 @@ class RegisterController extends Controller
     // App apis
     public function customerSignup(Request $request)
     {
-        // $name = $request->name;
         $phoneNumber = $request->phoneNumber;
         $password = $request->password;
 

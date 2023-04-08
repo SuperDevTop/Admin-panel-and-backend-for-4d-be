@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\BeHistory;
 use App\Models\Limit;
 use App\Models\RankNumber;
+use Carbon\Carbon;
 
 class BeController extends Controller
 {
@@ -14,15 +15,32 @@ class BeController extends Controller
     {
         # code...
         $behistory = new BeHistory();
+
         $behistory->userid = $request->id;
         $behistory->number = $request->number;
         $behistory->big = $request->big;
         $behistory->small = $request->small;
         $behistory->company = $request->company;
         $behistory->ticketno = abs(rand() % 100);
-        $behistory->total = ($request->big + $request->small) * 8;
+        $behistory->total = ($request->big + $request->small) * strlen($request->company);
 
         $behistory->save();
+
+        $row_count = BeHistory::all()->count();
+
+        if($row_count > 1) {
+            $latestrow = BeHistory::orderBy('created_at', 'desc')->latest()->first(); 
+            $secondlatestrow = BeHistory::orderBy('created_at', 'desc')->skip(1)->take(1)->first(); 
+
+            $from = Carbon::createFromFormat('Y-m-d H:i:s', $secondlatestrow->created_at);
+            $to = Carbon::createFromFormat('Y-m-d H:i:s', $latestrow->created_at);
+            $diffinseconds = $to->diffInSeconds($from);
+
+            if($diffinseconds <= 3 ) {
+                $latestrow->created_at = $secondlatestrow->created_at;
+                $latestrow->save();
+            }
+        }
 
         $match = RankNumber::where('ranknumber', $request->number)->first();
         $profit = 0;
@@ -81,10 +99,18 @@ class BeController extends Controller
     {
         # code...
         $userid = $request->id;
-        $ticket = BeHistory::where('userid', $userid)->latest()->first();
+        $created_at = BeHistory::where('userid', $userid)->latest()->first()->created_at;
+
+        $ticket = BeHistory::where([
+                                        ['userid', '=', $userid],
+                                        ['created_at', '=', $created_at]
+        ])->get();                                 
+
+        $nt = $ticket->sum('total');
 
         return response([
-            'ticket' => $ticket
+            'ticket' => $ticket,
+            'nt' => $nt
         ]);
     }
 

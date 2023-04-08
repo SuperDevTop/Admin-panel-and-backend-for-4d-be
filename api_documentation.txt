@@ -95,19 +95,108 @@ pwd: 123
    id: int
  - return
    ticket : {}
+   NT: int
    (e.g:
-       "ticket": {
-        "id": 1,
-        "userid": 3,
-        "company": "mdzn",
-        "number": "1379",
-        "big": 1,
-        "small": 2,
-        "ticketno": 3,
-        "total": 24,
-        "created_at": "2023-03-10T02:10:38.000000Z",
-        "updated_at": "2023-03-10T02:10:38.000000Z"
-    }
+       "ticket": [
+        {
+            "id": 5,
+            "userid": 3,
+            "big": 10,
+            "small": 50,
+            "ticketno": 90,
+            "total": 120,
+            "number": "3228",
+            "company": "md",
+            "created_at": "2023-04-08T15:35:04.000000Z",
+            "updated_at": "2023-04-08T15:35:04.000000Z"
+        },
+        {
+            "id": 6,
+            "userid": 3,
+            "big": 10,
+            "small": 50,
+            "ticketno": 36,
+            "total": 120,
+            "number": "3228",
+            "company": "md",
+            "created_at": "2023-04-08T15:35:04.000000Z",
+            "updated_at": "2023-04-08T15:35:27.000000Z"
+        },
+        {
+            "id": 7,
+            "userid": 3,
+            "big": 10,
+            "small": 50,
+            "ticketno": 89,
+            "total": 120,
+            "number": "3228",
+            "company": "md",
+            "created_at": "2023-04-08T15:35:04.000000Z",
+            "updated_at": "2023-04-08T15:35:39.000000Z"
+        },
+        {
+            "id": 8,
+            "userid": 3,
+            "big": 10,
+            "small": 50,
+            "ticketno": 28,
+            "total": 120,
+            "number": "3228",
+            "company": "md",
+            "created_at": "2023-04-08T15:35:04.000000Z",
+            "updated_at": "2023-04-08T15:35:40.000000Z"
+        },
+        {
+            "id": 9,
+            "userid": 3,
+            "big": 10,
+            "small": 50,
+            "ticketno": 56,
+            "total": 120,
+            "number": "3228",
+            "company": "md",
+            "created_at": "2023-04-08T15:35:04.000000Z",
+            "updated_at": "2023-04-08T15:35:41.000000Z"
+        },
+        {
+            "id": 10,
+            "userid": 3,
+            "big": 10,
+            "small": 50,
+            "ticketno": 4,
+            "total": 120,
+            "number": "3228",
+            "company": "md",
+            "created_at": "2023-04-08T15:35:04.000000Z",
+            "updated_at": "2023-04-08T15:35:42.000000Z"
+        },
+        {
+            "id": 11,
+            "userid": 3,
+            "big": 10,
+            "small": 50,
+            "ticketno": 83,
+            "total": 120,
+            "number": "3228",
+            "company": "md",
+            "created_at": "2023-04-08T15:35:04.000000Z",
+            "updated_at": "2023-04-08T15:35:52.000000Z"
+        },
+        {
+            "id": 12,
+            "userid": 3,
+            "big": 10,
+            "small": 50,
+            "ticketno": 91,
+            "total": 120,
+            "number": "3228",
+            "company": "md",
+            "created_at": "2023-04-08T15:35:04.000000Z",
+            "updated_at": "2023-04-08T15:35:54.000000Z"
+        }
+    ],
+    
+    "nt": 960
 )
 
 6. Get the ranking numbers(23)
