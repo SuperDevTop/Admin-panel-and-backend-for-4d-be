@@ -162,9 +162,11 @@ class BeController extends Controller
     public function getTime()
     {
         $time = date('Y-m-d H:i:s');
+        $hour = substr($time, 11, 2);
 
         return response([
-            'time'=> $time
+            'time' => $time,
+            'hour' => $hour
         ]);
     }
 }
