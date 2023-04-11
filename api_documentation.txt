@@ -41,6 +41,12 @@ pwd: 123
   .small:   int
   .company: string (e.g: 'MDTG': 4 companies)
   .id:      int
+  .type:    int (
+
+            1=> straight
+            2=> pao
+
+  )
 
  - return
 	.rank: int
