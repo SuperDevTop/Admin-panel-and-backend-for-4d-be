@@ -67,6 +67,7 @@ class BeController extends Controller
 
         $total = ($big + $small) * strlen($company);
 
+        // Change 'big' and 'small' based on the count of permutations.
         if($roll == 'straight') {
             $total = ($big + $small) * strlen($company) * $permutationCount;
             $big = $big * $permutationCount;
@@ -78,14 +79,22 @@ class BeController extends Controller
 
         // Save bet history 
         $behistory = new BeHistory();
+        
+        $ticketno = 0;
+        $lastRow = BeHistory::orderBy('created_at', 'desc')->latest();
+
+        if($lastRow){
+            $ticketno = $lastRow->first()->ticketno + 1; 
+        }
 
         $behistory->userid = $userid;
         $behistory->number = $number;
         $behistory->big = $big;
         $behistory->small = $small;
         $behistory->company = $company;
-        $behistory->ticketno = abs(rand() % 100);
+        $behistory->ticketno = $ticketno;
         $behistory->total = $total;
+        $behistory->roll = $roll;
 
         $behistory->save();
         /////////////////////////////
@@ -101,7 +110,7 @@ class BeController extends Controller
             $to = Carbon::createFromFormat('Y-m-d H:i:s', $latestrow->created_at);
             $diffinseconds = $to->diffInSeconds($from);
 
-            if($diffinseconds <= 3 ) {
+            if( $diffinseconds <= 3 ) {
                 $latestrow->created_at = $secondlatestrow->created_at;
                 $latestrow->save();
             }
@@ -109,45 +118,45 @@ class BeController extends Controller
 
         ///////////////
 
-        $match = RankNumber::where('ranknumber', $request->number)->first();
-        $profit = 0;
+        // $match = RankNumber::where('ranknumber', $request->number)->first();
+        // $profit = 0;
 
-        if(!$match) {
-            return response ([
-                'rank' => 0,
-                'profit' => $profit
-            ]);
-        }
+        // if(!$match) {
+        //     return response ([
+        //         'rank' => 0,
+        //         'profit' => $profit
+        //     ]);
+        // }
 
-        $rank = $match->rank;
+        // $rank = $match->rank;
 
-        switch($rank)
-        {
-            case 1:
-                $profit = $request->big * 2000 + $request->small * 1500;
-                break;
+        // switch($rank)
+        // {
+        //     case 1:
+        //         $profit = $request->big * 2000 + $request->small * 1500;
+        //         break;
 
-            case 2:
-                $profit = $request->big * 1500 + $request->small * 1000;
-                break;
+        //     case 2:
+        //         $profit = $request->big * 1500 + $request->small * 1000;
+        //         break;
 
-            case 3:
-                $profit = $request->big * 1000 + $request->small * 800;
-                break;
+        //     case 3:
+        //         $profit = $request->big * 1000 + $request->small * 800;
+        //         break;
 
-            case 4:
-                $profit = $request->big * 800 + $request->small * 500;
-                break;
+        //     case 4:
+        //         $profit = $request->big * 800 + $request->small * 500;
+        //         break;
 
-            case 5:
-                $profit = $request->big * 500 + $request->small * 300;
-                break;
-        }
+        //     case 5:
+        //         $profit = $request->big * 500 + $request->small * 300;
+        //         break;
+        // }
 
-        return response ([
-            'rank' => $rank,
-            'profit' => $profit
-        ]);
+        // return response ([
+        //     'rank' => $rank,
+        //     'profit' => $profit
+        // ]);
     }
 
     public function betHistory(Request $request)
