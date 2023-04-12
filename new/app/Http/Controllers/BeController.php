@@ -14,18 +14,83 @@ class BeController extends Controller
     public function bet(Request $request)
     {
         # code...
+
+        $roll = $request->roll;
+        $userid = $request->id;
+        $number = $request->number;
+        $big = $request->big;
+        $small = $request->small;
+        $company = $request->company;
+        $total = 0;
+
+        $set = array(); // permutation set
+        $permutationCount = 0;
+
+        // getting permutations
+        if($roll != 'straight') {
+            $a = $number[0];
+            $b = $number[1];
+            $c = $number[2];
+            $d = $number[3];
+
+            array_push($set, $a.$b.$c.$d);
+            array_push($set, $a.$b.$d.$c);
+            array_push($set, $a.$c.$b.$d);
+            array_push($set, $a.$c.$d.$b);
+            array_push($set, $a.$d.$b.$c);
+            array_push($set, $a.$d.$c.$b);
+
+            array_push($set, $b.$a.$c.$d);
+            array_push($set, $b.$a.$d.$c);
+            array_push($set, $b.$c.$a.$d);
+            array_push($set, $b.$c.$d.$a);
+            array_push($set, $b.$d.$a.$c);
+            array_push($set, $b.$d.$c.$a);
+
+            array_push($set, $c.$a.$b.$d);
+            array_push($set, $c.$a.$d.$b);
+            array_push($set, $c.$b.$a.$d);
+            array_push($set, $c.$b.$d.$a);
+            array_push($set, $c.$d.$a.$b);
+            array_push($set, $c.$d.$b.$a);           
+
+            array_push($set, $d.$a.$b.$c);
+            array_push($set, $d.$a.$c.$b);
+            array_push($set, $d.$b.$a.$c);
+            array_push($set, $d.$b.$c.$a);
+            array_push($set, $d.$c.$a.$b);            
+            array_push($set, $d.$c.$b.$a);  
+            
+            $set = array_unique($set);
+            $permutationCount = count($set);
+        }
+
+        $total = ($big + $small) * strlen($company);
+
+        if($roll == 'straight') {
+            $total = ($big + $small) * strlen($company) * $permutationCount;
+            $big = $big * $permutationCount;
+            $small = $small * $permutationCount;
+        } else if($roll == 'i-box') {
+            $big = (float)$big / $permutationCount;
+            $small = (float)$small / $permutationCount;
+        }
+
+        // Save bet history 
         $behistory = new BeHistory();
 
-        $behistory->userid = $request->id;
-        $behistory->number = $request->number;
-        $behistory->big = $request->big;
-        $behistory->small = $request->small;
-        $behistory->company = $request->company;
+        $behistory->userid = $userid;
+        $behistory->number = $number;
+        $behistory->big = $big;
+        $behistory->small = $small;
+        $behistory->company = $company;
         $behistory->ticketno = abs(rand() % 100);
-        $behistory->total = ($request->big + $request->small) * strlen($request->company);
+        $behistory->total = $total;
 
         $behistory->save();
+        /////////////////////////////
 
+        // in the case where multiple bets are done in a ticket 
         $row_count = BeHistory::all()->count();
 
         if($row_count > 1) {
@@ -41,6 +106,8 @@ class BeController extends Controller
                 $latestrow->save();
             }
         }
+
+        ///////////////
 
         $match = RankNumber::where('ranknumber', $request->number)->first();
         $profit = 0;
@@ -159,6 +226,7 @@ class BeController extends Controller
         ]);
     }
 
+    // Getting the time on the server
     public function getTime()
     {
         $time = date('Y-m-d H:i:s');

@@ -22,6 +22,7 @@ return new class extends Migration
             $table->integer('total');
             $table->string('number');
             $table->string('company');
+            $table->string('roll');
             $table->timestamps();
         });
     }
