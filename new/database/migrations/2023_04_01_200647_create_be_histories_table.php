@@ -16,8 +16,8 @@ return new class extends Migration
         Schema::create('be_histories', function (Blueprint $table) {
             $table->id();
             $table->integer('userid');
-            $table->integer('big');
-            $table->integer('small');
+            $table->float('big');
+            $table->float('small');
             $table->integer('ticketno');
             $table->integer('total');
             $table->string('number');

@@ -68,24 +68,22 @@ class BeController extends Controller
         $total = ($big + $small) * strlen($company);
 
         // Change 'big' and 'small' based on the count of permutations.
-        if($roll == 'straight') {
+        if($roll == 'pao') {
             $total = ($big + $small) * strlen($company) * $permutationCount;
-            $big = $big * $permutationCount;
-            $small = $small * $permutationCount;
         } else if($roll == 'i-box') {
             $big = (float)$big / $permutationCount;
             $small = (float)$small / $permutationCount;
         }
+            
+        $ticketno = 0;
+        $lastRow = BeHistory::orderBy('created_at', 'desc')->latest()->first();
 
+        if($lastRow) {
+            $ticketno = $lastRow->ticketno + 1; 
+        }
+        
         // Save bet history 
         $behistory = new BeHistory();
-        
-        $ticketno = 0;
-        $lastRow = BeHistory::orderBy('created_at', 'desc')->latest();
-
-        if($lastRow){
-            $ticketno = $lastRow->first()->ticketno + 1; 
-        }
 
         $behistory->userid = $userid;
         $behistory->number = $number;
@@ -110,8 +108,11 @@ class BeController extends Controller
             $to = Carbon::createFromFormat('Y-m-d H:i:s', $latestrow->created_at);
             $diffinseconds = $to->diffInSeconds($from);
 
+            echo $diffinseconds;
+
             if( $diffinseconds <= 3 ) {
                 $latestrow->created_at = $secondlatestrow->created_at;
+                $latestrow->ticketno = $ticketno - 1;
                 $latestrow->save();
             }
         }
