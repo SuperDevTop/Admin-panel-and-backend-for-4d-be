@@ -307,10 +307,6 @@
                     })  
                 }
             })
-
-            // $('.value').focusout(function() {
-            //     $(this).parent().siblings().eq(1).children().html('<a class="btn btn-link text-dark px-3 mb-0 edit_btn"><i class="fas fa-pencil-alt text-dark me-2" aria-hidden="true"></i>Edit</a>')             
-            // })
         })
     </script>
 @endsection

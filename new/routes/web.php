@@ -56,4 +56,5 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/{page}', [PageController::class, 'index'])->name('page');
 	Route::post('logout', [LoginController::class, 'logout'])->name('logout');
 	Route::post('/setLimit', [BeController::class, 'setLimit']);
+	Route::post('/addPoint', [BeController::class, 'addPoint']);
 });

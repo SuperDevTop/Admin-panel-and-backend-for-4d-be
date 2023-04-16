@@ -46,7 +46,11 @@ class RegisterController extends Controller
         DB::table('users')->insert([
             'username' => 'name',
             'password' => Hash::make($password),
-            'phoneNumber' => $phoneNumber
+            'phoneNumber' => $phoneNumber,
+            'pointbalance' => 0,
+            'reload' => 0,
+            'spent' => 0,
+            'pointsavailable' =>0
         ]);
 
         return response([

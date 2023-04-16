@@ -22,11 +22,10 @@ return new class extends Migration
             $table->string('email')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('address')->nullable();
-            $table->string('city')->nullable();
-            $table->string('country')->nullable();
-            $table->string('postal')->nullable();
-            $table->text('about')->nullable();
+            $table->integer('pointbalance')->unsigned()->nullable();
+            $table->integer('reload')->unsigned()->nullable();
+            $table->integer('spent')->unsigned()->nullable();
+            $table->integer('pointsavailable')->unsigned()->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

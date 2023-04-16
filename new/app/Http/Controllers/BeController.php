@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\BeHistory;
 use App\Models\Limit;
 use App\Models\RankNumber;
+use App\Models\User;
 use Carbon\Carbon;
 
 class BeController extends Controller
@@ -245,6 +246,30 @@ class BeController extends Controller
         return response([
             'time' => $time,
             'hour' => $hour
+        ]);
+    }
+
+    // Add points by admin
+    public function addPoint(Request $request)
+    {
+        # code...
+        $point = $request->point;
+        $phoneNumber = $request->phoneNumber;
+
+        $selectedUser = User::where('phoneNumber', $phoneNumber)->get()->first();
+
+        $selectedUser->reload = $selectedUser->reload + $point;
+        $selectedUser->pointsavailable = $selectedUser->pointsavailable + $point;
+
+        $reload = $selectedUser->reload;
+        $pointsavailable = $selectedUser->pointsavailable;
+
+        $selectedUser->save();
+
+        return response([
+            'msg'=> 'success',
+            'reload' => $reload,
+            'pointsavailable' => $pointsavailable 
         ]);
     }
 }
