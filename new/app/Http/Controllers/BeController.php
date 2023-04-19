@@ -76,7 +76,7 @@ class BeController extends Controller
             $small = (float)$small / $permutationCount;
         }
             
-        $ticketno = 0;
+        $ticketno = 1;
         $lastRow = BeHistory::orderBy('created_at', 'desc')->latest()->first();
 
         if($lastRow) {
@@ -102,10 +102,10 @@ class BeController extends Controller
         $row_count = BeHistory::all()->count();
 
         if($row_count > 1) {
-            $latestrow = BeHistory::orderBy('created_at', 'desc')->latest()->first(); 
-            $secondlatestrow = BeHistory::orderBy('created_at', 'desc')->skip(1)->take(1)->first(); 
+            $latestrow = BeHistory::orderBy('id', 'desc')->latest()->first(); 
+            $secondlatestrow = BeHistory::orderBy('id', 'desc')->skip(1)->first(); 
 
-            $from = Carbon::createFromFormat('Y-m-d H:i:s', $secondlatestrow->created_at);
+            $from = Carbon::createFromFormat('Y-m-d H:i:s', $secondlatestrow->updated_at);
             $to = Carbon::createFromFormat('Y-m-d H:i:s', $latestrow->created_at);
             $diffinseconds = $to->diffInSeconds($from);
 
@@ -117,48 +117,6 @@ class BeController extends Controller
                 $latestrow->save();
             }
         }
-
-        ///////////////
-
-        // $match = RankNumber::where('ranknumber', $request->number)->first();
-        // $profit = 0;
-
-        // if(!$match) {
-        //     return response ([
-        //         'rank' => 0,
-        //         'profit' => $profit
-        //     ]);
-        // }
-
-        // $rank = $match->rank;
-
-        // switch($rank)
-        // {
-        //     case 1:
-        //         $profit = $request->big * 2000 + $request->small * 1500;
-        //         break;
-
-        //     case 2:
-        //         $profit = $request->big * 1500 + $request->small * 1000;
-        //         break;
-
-        //     case 3:
-        //         $profit = $request->big * 1000 + $request->small * 800;
-        //         break;
-
-        //     case 4:
-        //         $profit = $request->big * 800 + $request->small * 500;
-        //         break;
-
-        //     case 5:
-        //         $profit = $request->big * 500 + $request->small * 300;
-        //         break;
-        // }
-
-        // return response ([
-        //     'rank' => $rank,
-        //     'profit' => $profit
-        // ]);
     }
 
     public function betHistory(Request $request)
@@ -175,19 +133,25 @@ class BeController extends Controller
     public function ticket(Request $request)
     {
         # code...
+        // $userid = $request->id;
+        // $created_at = BeHistory::where('userid', $userid)->latest()->first()->created_at;
+
+        // $ticket = BeHistory::where([
+        //                                 ['userid', '=', $userid],
+        //                                 ['created_at', '=', $created_at]
+        // ])->get();                                 
+
+        // $nt = $ticket->sum('total');
+
+        // return response ([
+        //     'ticket' => $ticket,
+        //     'nt' => $nt
+        // ]);
         $userid = $request->id;
-        $created_at = BeHistory::where('userid', $userid)->latest()->first()->created_at;
+        $histories = BeHistory::orderBy('id', 'desc')->where('userid', $userid)->get();
 
-        $ticket = BeHistory::where([
-                                        ['userid', '=', $userid],
-                                        ['created_at', '=', $created_at]
-        ])->get();                                 
-
-        $nt = $ticket->sum('total');
-
-        return response ([
-            'ticket' => $ticket,
-            'nt' => $nt
+        return response([
+            'histories' => $histories
         ]);
     }
 

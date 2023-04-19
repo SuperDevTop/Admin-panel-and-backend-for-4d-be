@@ -41,6 +41,7 @@
                                 </thead>
                                 <tbody>
                                     @foreach($users as $user)
+                                    @if(Auth::user()->id != 1)
                                     <tr>
                                         <td>
                                             <div class="d-flex px-2">
@@ -72,6 +73,7 @@
                                             <input size="5" class="point"><button class="save">save</button><button class="cancel">cancel</button>
                                         </td>
                                     </tr>
+                                    @endif
                                     @endforeach                                    
                                 </tbody>
                             </table>

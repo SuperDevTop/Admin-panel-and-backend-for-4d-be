@@ -25,7 +25,7 @@ class RegisterController extends Controller
         $user = User::create($attributes);
         auth()->login($user);
 
-        return redirect('/dashboard');
+        return redirect('/profile');
     }
 
     // App apis
