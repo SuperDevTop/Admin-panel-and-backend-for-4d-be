@@ -236,4 +236,15 @@ class BeController extends Controller
             'pointsavailable' => $pointsavailable 
         ]);
     }
+
+    public function getPointBalance(Request $request)
+    {
+        # code...
+        $id = $request->user_id;
+        $balance = User::where('id', $id)->get()->first()->pointbalance;
+
+        return response([
+            'balance' => $balance
+        ]);
+    }
 }

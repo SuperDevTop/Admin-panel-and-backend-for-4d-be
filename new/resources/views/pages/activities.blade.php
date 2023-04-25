@@ -60,7 +60,6 @@
         $total_big_excess += $excess_big;
         $total_small_excess += $excess_small;
     }
-
     
 ?>
 @extends('layouts.app', ['class' => 'g-sidenav-show bg-gray-100'])
@@ -72,7 +71,7 @@
             <div class="col-12">
                 <div class="card mb-4">
                     <div class="card-header pb-0">
-                        <h6>Admin ACTIVITIES</h6>
+                        <h6 class="font_times_new_roman">ADMIN ACTIVITIES</h6>
                     </div>
                     <div class="card-body px-0 pt-0 pb-2">
                         <div class="table-responsive p-0">
@@ -159,18 +158,17 @@
                                         <td class="align-middle text-center">                                        
                                             <p class="text-lg font-weight-bold mb-0">{{ $total_small_excess }}</p>
                                         </td>
-                                    </tr>
-                                    
+                                    </tr>                                    
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-6">
+            <div class="col-md-6">
                 <div class="card mb-4">  
                     <div class="card-header pb-0">
-                        <h6>Owner Acceptable Limit</h6>
+                        <h6 class="font_times_new_roman">Owner Acceptable Limit</h6>
                     </div>             
                     <div class="card-body px-0 pt-0 pb-2">
                         <div class="table-responsive p-0">
@@ -185,10 +183,8 @@
                                             <p class=" font-weight-bold mb-0 value">{{ $limit_big }}</p>
                                         </td>
                                         <td class="align-middle text-center" style="border-collapse: collapse">
-                                            {{-- <div class="ms-auto">                                          --}}
-                                                <a class="btn btn-link text-dark px-3 mb-0 edit_btn"><i
-                                                        class="fas fa-pencil-alt text-dark me-2" aria-hidden="true"></i>Edit</a>
-                                            {{-- </div> --}}
+                                            <a class="btn btn-link text-dark px-3 mb-0 edit_btn">
+                                                <i class="fas fa-pencil-alt text-dark me-2" aria-hidden="true"></i>Edit</a>
                                         </td>
                                     </tr>                                    
                                     <tr>
@@ -200,8 +196,8 @@
                                             <p class="font-weight-bold mb-0 value">{{ $limit_small }}</p>
                                         </td>
                                         <td class="align-middle text-center" style="border-collapse: collapse">
-                                                <a class="btn btn-link text-dark px-3 mb-0 edit_btn"><i
-                                                        class="fas fa-pencil-alt text-dark me-2" aria-hidden="true"></i>Edit</a>
+                                            <a class="btn btn-link text-dark px-3 mb-0 edit_btn"><i
+                                                class="fas fa-pencil-alt text-dark me-2" aria-hidden="true"></i>Edit</a>
                                         </td>
                                     </tr>                                    
                                 </tbody>
@@ -210,10 +206,10 @@
                     </div>
                 </div>
             </div>
-            <div class="col-6">
+            <div class="col-md-6">
                 <div class="card mb-4">  
                     <div class="card-header pb-0">
-                        <h6>Betting Limit</h6>
+                        <h6 class="font_times_new_roman">Betting Limit</h6>
                     </div>             
                     <div class="card-body px-0 pt-0 pb-2">
                         <div class="table-responsive p-0">
@@ -222,8 +218,7 @@
                                     <tr>
                                         <td class="align-middle text-center">
                                             <p class="font-weight-bold mb-0">Sold out limit -Big</p>                
-                                        </td>
-                                       
+                                        </td>                                       
                                         <td class="align-middle text-center">                                        
                                             <p class="font-weight-bold mb-0 value">{{ $limit_sold_out_big }}</p>
                                         </td>
@@ -235,14 +230,13 @@
                                     <tr>
                                         <td class="align-middle text-center">
                                             <p class="font-weight-bold mb-0">Sold out limit -Small</p>                
-                                        </td>
-                                       
+                                        </td>                                       
                                         <td class="align-middle text-center">                                        
                                             <p class="font-weight-bold mb-0 value">{{ $limit_sold_out_small }}</p>
                                         </td>
                                         <td class="align-middle text-center" style="border-collapse: collapse">
                                             <a class="btn btn-link text-dark px-3 mb-0 edit_btn"><i
-                                                    class="fas fa-pencil-alt text-dark me-2" aria-hidden="true"></i>Edit</a>
+                                                class="fas fa-pencil-alt text-dark me-2" aria-hidden="true"></i>Edit</a>
                                         </td>
                                     </tr>                                    
                                 </tbody>

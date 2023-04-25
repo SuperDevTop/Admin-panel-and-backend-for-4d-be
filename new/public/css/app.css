@@ -1,16 +1,5 @@
-/* 
-  
-  th:nth-child(even),td:nth-child(even) {
-    background-color: rgba(219, 138, 16, 0.4);
-  }
-  th:nth-child(odd), td:nth-child(odd) {
-    background-color: rgba(130, 81, 7, 0.4);
-  } */
-/* 
-  table, tr, td, th{
-    border: 1px solid rgb(227, 211, 211);
-  }
 
-  tr, td{
-    border-radius: 4px;
-  } */
+
+  .font_times_new_roman {
+    font-family: 'Times New Roman', Times, serif;
+  }
