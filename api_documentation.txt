@@ -41,12 +41,11 @@ pwd: 123
   .small:   int
   .company: string (e.g: 'MDTG': 4 companies)
   .id:      int
-  .type:    int (
+  .roll:    string (
 
-            1=> straight
-            2=> pao
-            3=> i-box
-
+             . straight
+             . pao
+             . i-box
   )
 
  - return

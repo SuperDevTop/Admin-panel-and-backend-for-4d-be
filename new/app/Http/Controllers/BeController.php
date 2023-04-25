@@ -109,8 +109,6 @@ class BeController extends Controller
             $to = Carbon::createFromFormat('Y-m-d H:i:s', $latestrow->created_at);
             $diffinseconds = $to->diffInSeconds($from);
 
-            echo $diffinseconds;
-
             if( $diffinseconds <= 3 ) {
                 $latestrow->created_at = $secondlatestrow->created_at;
                 $latestrow->ticketno = $ticketno - 1;
@@ -241,7 +239,7 @@ class BeController extends Controller
     {
         # code...
         $id = $request->user_id;
-        $balance = User::where('id', $id)->get()->first()->pointbalance;
+        $balance = User::where('id', $id)->get()->first()->pointsavailable;
 
         return response([
             'balance' => $balance

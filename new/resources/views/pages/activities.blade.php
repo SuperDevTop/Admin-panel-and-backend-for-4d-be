@@ -4,7 +4,9 @@
     use App\Models\BeHistory;
     use App\Models\Limit;
 
-    $ranknumbers = RankNumber::all()->pluck('ranknumber')->toArray();
+    // $ranknumbers = RankNumber::all()->pluck('ranknumber')->toArray();
+    $ranknumbers = BeHistory::all()->pluck('number')->toArray();
+    $ranknumbers = array_unique($ranknumbers);
     $beAnalysis = [];
 
     $limit = Limit::all()->first();
