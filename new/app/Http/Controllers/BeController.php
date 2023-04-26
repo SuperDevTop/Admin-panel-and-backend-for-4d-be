@@ -24,6 +24,22 @@ class BeController extends Controller
         $company = $request->company;
         $total = 0;
 
+        $total = ($big + $small) * strlen($company);
+
+        // Change balances
+        $user = User::where('id', $userid)->first();
+
+        $current_spent = $user->spent;
+        $current_pointsavailable = $user->pointsavailable;
+
+        $new_spent = $current_spent + $total;
+        $new_pointsavailable = $current_pointsavailable - $total;
+
+        $user->spent = $new_spent;
+        $user->pointsavailable = $new_pointsavailable;
+
+        $user->save();
+
         $set = array(); // permutation set
         $permutationCount = 0;
 
@@ -66,8 +82,6 @@ class BeController extends Controller
             $permutationCount = count($set);
         }
 
-        $total = ($big + $small) * strlen($company);
-
         // Change 'big' and 'small' based on the count of permutations.
         if($roll == 'pao') {
             $total = ($big + $small) * strlen($company) * $permutationCount;
@@ -82,7 +96,7 @@ class BeController extends Controller
         if($lastRow) {
             $ticketno = $lastRow->ticketno + 1; 
         }
-        
+              
         // Save bet history 
         $behistory = new BeHistory();
 
@@ -115,6 +129,7 @@ class BeController extends Controller
                 $latestrow->save();
             }
         }
+
     }
 
     public function betHistory(Request $request)
