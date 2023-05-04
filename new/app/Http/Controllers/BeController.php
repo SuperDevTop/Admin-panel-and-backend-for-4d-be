@@ -26,6 +26,14 @@ class BeController extends Controller
 
         $total = ($big + $small) * strlen($company);
 
+        // Change 'big' and 'small' based on the count of permutations.
+        if($roll == 'pao') {
+            $total = ($big + $small) * strlen($company) * $permutationCount;
+        } else if($roll == 'i-box') {
+            $big = (float)$big / $permutationCount;
+            $small = (float)$small / $permutationCount;
+        }
+
         // Change balances
         $user = User::where('id', $userid)->first();
 
@@ -35,6 +43,12 @@ class BeController extends Controller
         $new_spent = $current_spent + $total;
         $new_pointsavailable = $current_pointsavailable - $total;
 
+        if($new_pointsavailable < 0) {
+            return response([
+                'result' => 0
+            ]);
+        }
+
         $user->spent = $new_spent;
         $user->pointsavailable = $new_pointsavailable;
 
@@ -43,7 +57,7 @@ class BeController extends Controller
         $set = array(); // permutation set
         $permutationCount = 0;
 
-        // getting permutations
+        // Getting permutations
         if($roll != 'straight') {
             $a = $number[0];
             $b = $number[1];
@@ -80,14 +94,6 @@ class BeController extends Controller
             
             $set = array_unique($set);
             $permutationCount = count($set);
-        }
-
-        // Change 'big' and 'small' based on the count of permutations.
-        if($roll == 'pao') {
-            $total = ($big + $small) * strlen($company) * $permutationCount;
-        } else if($roll == 'i-box') {
-            $big = (float)$big / $permutationCount;
-            $small = (float)$small / $permutationCount;
         }
             
         $ticketno = 1;
@@ -130,6 +136,9 @@ class BeController extends Controller
             }
         }
 
+        return response([
+            'result' => 1
+        ]);
     }
 
     public function betHistory(Request $request)

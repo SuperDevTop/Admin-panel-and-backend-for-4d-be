@@ -70,7 +70,9 @@
                                             <button class="btn btn-danger btn-link text-white mb-0 add-point"><i class="fa fa-plus"></i> Add</button>
                                         </td>
                                         <td class="lastrow">
-                                            <input size="5" class="point"><button class="save">save</button><button class="cancel">cancel</button>
+                                            <input size="5" class="point">
+                                            <button class="save btn btn-success mb-0">save</button>
+                                            <button class="cancel btn btn-success mb-0">cancel</button>
                                         </td>
                                     </tr>
                                     @endif
