@@ -6067,7 +6067,7 @@ textarea.form-control-lg {
 }
 
 .modal-header {
-  display: flex;
+  /* display: flex; */
   flex-shrink: 0;
   align-items: center;
   justify-content: space-between;

@@ -252,9 +252,9 @@
     <div class="modal fade pr-5 mt-5" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content" style="width: 600px">
-                <div class="modal-header">
+                <div class="modal-header display-block">
                     <h5 class="modal-title text-center" id="exampleModalLabel">Details</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    {{-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> --}}
                 </div>
                 <div class="modal-body">
                     <table id="detailedTable" class="table align-items-center justify-content-center mb-0 admin_activities_1">
