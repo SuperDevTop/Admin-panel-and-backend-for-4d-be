@@ -269,4 +269,20 @@ class BeController extends Controller
             'balance' => $balance
         ]);
     }
+
+    public function getDetails($bettingno)
+    {
+        # code...
+        $history = BeHistory::where('number', $bettingno)->get();
+
+        foreach ($history as $key => $row) {
+            # code...
+            $userid = $row->userid;
+            $row['phoneNumber'] = User::where('id', $userid)->first()->phoneNumber;
+        }
+
+        return response ([
+            'history' => $history
+        ]);
+    }
 }

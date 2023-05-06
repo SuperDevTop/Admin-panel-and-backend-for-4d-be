@@ -57,4 +57,5 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::post('logout', [LoginController::class, 'logout'])->name('logout');
 	Route::post('/setLimit', [BeController::class, 'setLimit']);
 	Route::post('/addPoint', [BeController::class, 'addPoint']);
+	Route::get('/getDetails/{bettingno}', [BeController::class, 'getDetails']);
 });

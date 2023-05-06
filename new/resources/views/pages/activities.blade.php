@@ -4,7 +4,6 @@
     use App\Models\BeHistory;
     use App\Models\Limit;
 
-    // $ranknumbers = RankNumber::all()->pluck('ranknumber')->toArray();
     $ranknumbers = BeHistory::all()->pluck('number')->toArray();
     $ranknumbers = array_unique($ranknumbers);
     $beAnalysis = [];
@@ -61,8 +60,7 @@
         $total_small += $small;
         $total_big_excess += $excess_big;
         $total_small_excess += $excess_small;
-    }
-    
+    }   
 ?>
 @extends('layouts.app', ['class' => 'g-sidenav-show bg-gray-100'])
 
@@ -77,7 +75,7 @@
                     </div>
                     <div class="card-body px-0 pt-0 pb-2">
                         <div class="table-responsive p-0">
-                            <table class="table align-items-center justify-content-center mb-0 admin_activities_1">
+                            <table class="table align-items-center justify-content-center mb-0">
                                 <thead>
                                     <tr>
                                         <th 
@@ -104,12 +102,12 @@
                                 </thead>
                                 <tbody>
                                     @foreach($beAnalysis as $ele)
-                                    <tr>
+                                    <tr class="data" data-bs-toggle="modal" data-bs-target="#exampleModal">
                                         <td class="align-middle text-center">
                                             <p class="font-weight-bold mb-0"> {{ $ele->total_customer }} </p>                
                                         </td>
                                         <td class="align-middle text-center">
-                                            <p class="font-weight-bold mb-0">{{  $ele->betno }}</p>
+                                            <p class="font-weight-bold mb-0">{{ $ele->betno }}</p>
                                         </td>
                                         
                                         @if($ele->big > $limit_sold_out_big)
@@ -248,11 +246,57 @@
                 </div>
             </div>
         </div>
-        @include('layouts.footers.auth.footer')
     </div>
+  
+    <!-- Modal -->
+    <div class="modal fade pr-5 mt-5" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content" style="width: 600px">
+                <div class="modal-header">
+                    <h5 class="modal-title text-center" id="exampleModalLabel">Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <table id="detailedTable" class="table align-items-center justify-content-center mb-0 admin_activities_1">
+                        <thead>
+                            <tr>
+                                <th 
+                                    class="text-uppercase text-secondary text-md font-weight-bolder text-center opacity-7 ps-2">
+                                    Customer
+                                </th>
+                                <th
+                                    class="text-uppercase text-secondary text-md font-weight-bolder text-center opacity-7 ps-2">
+                                    Betting No.
+                                </th>
+                                <th
+                                    class="text-uppercase text-secondary text-md font-weight-bolder text-center opacity-7 ps-2">
+                                    Big
+                                </th>
+                                <th
+                                    class="text-uppercase text-secondary text-md font-weight-bolder text-center opacity-7 ps-2">
+                                    Small
+                                </th>
+                                <th
+                                    class="text-uppercase text-secondary text-md font-weight-bolder text-center opacity-7 ps-2">
+                                    Date
+                                </th>
+                            </tr>
+                        </thead>
+                    </table> 
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @include('layouts.footers.auth.footer')
+    
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script>
         $(document).ready(function(){
+
             $('.edit_btn').click(function(){
                 
                 if($(this).text().replace(/\s/g, '') == 'Edit')
@@ -302,6 +346,47 @@
                         }
                     })  
                 }
+            })
+
+            $('.data').click(function() {
+                // Getting the ticket number of this row
+                bettingno = $(this).children().eq(1).text().replace(/\s/g, '')
+                
+                $.ajax({
+                        type: 'GET',
+                        url: '/getDetails/' + bettingno,
+                        headers: {'x-csrf-token': '{{ csrf_token() }}'},
+                        
+                        beforeSend: function () {
+                        
+                        },
+
+                        success:function(data) {
+
+                            $('#detailedTable tr.new').remove()
+
+                            result = data.history
+                            
+                            result.forEach(one => {
+                                customer = one.phoneNumber
+                                bettingno = one.number
+                                big = one.big
+                                small = one.small
+                                date = one.created_at.substr(0, 10)
+
+                                $('#detailedTable').append("<tr class='new'><td class='align-middle text-center'><p class='font-weight-bold mb-0'>" + customer + "</p></td>"
+                                                             + "<td class='align-middle text-center'><p class='font-weight-bold mb-0'>" + bettingno + "</p></td>"                      
+                                                             + "<td class='text-center align-middle'><p class='font-weight-bold mb-0'>" + big + "</p></td>"
+                                                             + "<td class='align-middle text-center'><p class='font-weight-bold mb-0'>" + small + "</p></td>"
+                                                             + "<td class='align-middle text-center'><p class='font-weight-bold mb-0'>" + date + "</p></td></tr>" )
+                            });
+
+                        },
+                        
+                        error: function (xhr, err) { 
+
+                        }
+                    })
             })
         })
     </script>
