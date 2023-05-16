@@ -29,3 +29,5 @@ Route::post('/getTicket', [BeController::class, 'ticket']);
 Route::get('/getRankNumbers', [BeController::class, 'rankNumbers']);
 Route::get('/getTime', [BeController::class, 'getTime']);
 Route::post('/getPointBalance', [BeController::class, 'getPointBalance']);
+
+Route::post('/movePoint', [BeController::class, 'movePoint']);

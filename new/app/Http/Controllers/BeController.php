@@ -285,4 +285,37 @@ class BeController extends Controller
             'history' => $history
         ]);
     }
+
+    public function movePoint(Request $request)
+    {
+        $from = $request->from;
+        $to = $request->to;
+        $amount = $request->amount;
+
+        $count = User::where('phoneNumber', $to)->get()->count();
+
+        if($count == 0) {
+            return response()->json([
+                'result' => '1'
+            ]);
+        }
+
+        $fromUser = User::where('phoneNumber', $from)->first();
+        $pointsavailable = $fromUser->pointsavailable - $amount;
+        $spent = $fromUser->spent + $amount;
+        $fromUser->pointsavailable = $pointsavailable;
+        $fromUser->spent = $spent;
+        $fromUser->save();
+
+        $toUser = User::where('phoneNumber', $to)->first();
+        $pointsavailable = $toUser->pointsavailable + $amount;
+        $reload = $toUser->reload + $amount;
+        $toUser->pointsavailable = $pointsavailable;
+        $toUser->reload = $reload;
+        $toUser->save();
+
+        return response()->json([
+            'result' => '2'
+        ]);
+    }
 }
