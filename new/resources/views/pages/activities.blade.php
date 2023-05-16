@@ -253,7 +253,7 @@
         <div class="modal-dialog">
             <div class="modal-content" style="width: 600px">
                 <div class="modal-header display-block">
-                    <h5 class="modal-title text-center" id="exampleModalLabel">Details</h5>
+                    <h5 class="modal-title text-center font_times_new_roman" id="exampleModalLabel">Details</h5>
                     {{-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> --}}
                 </div>
                 <div class="modal-body">
