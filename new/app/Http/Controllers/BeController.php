@@ -8,6 +8,7 @@ use App\Models\Limit;
 use App\Models\RankNumber;
 use App\Models\User;
 use Carbon\Carbon;
+use stdClass;
 
 class BeController extends Controller
 {
@@ -154,21 +155,6 @@ class BeController extends Controller
 
     public function ticket(Request $request)
     {
-        # code...
-        // $userid = $request->id;
-        // $created_at = BeHistory::where('userid', $userid)->latest()->first()->created_at;
-
-        // $ticket = BeHistory::where([
-        //                                 ['userid', '=', $userid],
-        //                                 ['created_at', '=', $created_at]
-        // ])->get();                                 
-
-        // $nt = $ticket->sum('total');
-
-        // return response ([
-        //     'ticket' => $ticket,
-        //     'nt' => $nt
-        // ]);
         $userid = $request->id;
         $histories = BeHistory::orderBy('id', 'desc')->where('userid', $userid)->get();
 
@@ -317,5 +303,101 @@ class BeController extends Controller
         return response()->json([
             'result' => '2'
         ]);
+    }
+
+    public function getTableData(string $company)
+    {
+        # code...
+        $ranknumbers = BeHistory::where('company', 'LIKE', '%'.$company.'%')->pluck('number')->toArray();
+        $ranknumbers = array_unique($ranknumbers);
+        $beAnalysis = [];
+
+        $limit = Limit::all()->first();
+        $limit_big = $limit->big;
+        $limit_small = $limit->small;
+        $limit_sold_out_big = $limit->sold_out_big;
+        $limit_sold_out_small = $limit->sold_out_small;
+
+        $total_big = 0;
+        $total_small = 0;
+        $total_big_excess = 0;
+        $total_small_excess = 0;
+
+        foreach($ranknumbers as $num)
+        {
+            $big = BeHistory::where([
+                                        ['number', '=', $num],
+                                        ['company', 'LIKE', '%'.$company.'%']
+                                    ])->sum('big');
+
+            $small = BeHistory::where([
+                                        ['number', '=', $num],
+                                        ['company','LIKE', '%'.$company.'%']
+                                    ])->sum('small');
+
+            $total_customer = BeHistory::where([
+                                                    ['number', '=', $num],
+                                                    ['company','LIKE', '%'.$company.'%']
+                                                ])->count();
+
+            if(!$total_customer)
+            {
+                continue;
+            }
+
+            $excess_big = $big - $limit_big;
+            $excess_small = $small - $limit_small;
+
+            $excess_big = $excess_big < 0 ? 0 : $excess_big;
+            $excess_small = $excess_small < 0 ? 0 : $excess_small;
+
+            if($big > $limit_sold_out_big)
+            {
+                $excess_big = 0;
+            }
+
+            if($small > $limit_sold_out_small)
+            {
+                $excess_small = 0;
+            }
+
+            $ele = new stdClass();
+            $ele->total_customer = $total_customer;
+            $ele->betno = $num;
+            $ele->big = $big;
+            $ele->small = $small;
+            $ele->excess_big = $excess_big;
+            $ele->excess_small = $excess_small;
+
+            array_push($beAnalysis, $ele);
+
+            $total_big += $big;
+            $total_small += $small;
+            $total_big_excess += $excess_big;
+            $total_small_excess += $excess_small;
+        } 
+
+        // return redirect()->route('page', ['page' => 'profile']);
+        $page = 'activities';
+        if (view()->exists("pages.{$page}")) {
+            return view("pages.{$page}");
+        }
+        return view('pages.profile-static', 
+                    compact('beAnalysis', 'limit_sold_out_big', 'limit_sold_out_small', 'total_big', 'total_small',
+                    'total_big_excess', 'total_small_excess', 'limit_big', 'limit_small')
+                );
+        // return response()->json([
+        //     'beAnalysis' => $beAnalysis,
+        //     'limit_sold_out_big' => $limit_sold_out_big,
+        //     'limit_sold_out_small' => $limit_sold_out_small,
+        //     'total_big' => $total_big,
+        //     'total_small' => $total_small,
+        //     'total_big_excess' => $total_big_excess,
+        //     'total_small_excess' => $total_small_excess,
+        //     'limit_big' => $limit_big,
+        //     'limit_small' => $limit_small,
+        //     'limit_sold_out_big' => $limit_sold_out_big,
+        //     'limit_sold_out_small' => $limit_sold_out_small
+        // ]);
     }
 }

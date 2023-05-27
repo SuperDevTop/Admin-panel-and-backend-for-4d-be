@@ -1,66 +1,66 @@
 <?php
-    use App\Models\User;
-    use App\Models\RankNumber;
-    use App\Models\BeHistory;
-    use App\Models\Limit;
+    // use App\Models\User;
+    // use App\Models\RankNumber;
+    // use App\Models\BeHistory;
+    // use App\Models\Limit;
 
-    $ranknumbers = BeHistory::all()->pluck('number')->toArray();
-    $ranknumbers = array_unique($ranknumbers);
-    $beAnalysis = [];
+    // $ranknumbers = BeHistory::all()->pluck('number')->toArray();
+    // $ranknumbers = array_unique($ranknumbers);
+    // $beAnalysis = [];
 
-    $limit = Limit::all()->first();
-    $limit_big = $limit->big;
-    $limit_small = $limit->small;
-    $limit_sold_out_big = $limit->sold_out_big;
-    $limit_sold_out_small = $limit->sold_out_small;
+    // $limit = Limit::all()->first();
+    // $limit_big = $limit->big;
+    // $limit_small = $limit->small;
+    // $limit_sold_out_big = $limit->sold_out_big;
+    // $limit_sold_out_small = $limit->sold_out_small;
 
-    $total_big = 0;
-    $total_small = 0;
-    $total_big_excess = 0;
-    $total_small_excess = 0;
+    // $total_big = 0;
+    // $total_small = 0;
+    // $total_big_excess = 0;
+    // $total_small_excess = 0;
 
-    foreach($ranknumbers as $num)
-    {
-        $big = BeHistory::where('number', $num)->sum('big');
-        $small = BeHistory::where('number', $num)->sum('small');
-        $total_customer = BeHistory::where('number', $num)->count();
+    // foreach($ranknumbers as $num)
+    // {
+    //     $big = BeHistory::where('number', $num)->sum('big');
+    //     $small = BeHistory::where('number', $num)->sum('small');
+    //     $total_customer = BeHistory::where('number', $num)->count();
 
-        if(!$total_customer)
-        {
-            continue;
-        }
+    //     if(!$total_customer)
+    //     {
+    //         continue;
+    //     }
 
-        $excess_big = $big - $limit_big;
-        $excess_small = $small - $limit_small;
+    //     $excess_big = $big - $limit_big;
+    //     $excess_small = $small - $limit_small;
 
-        $excess_big = $excess_big < 0 ? 0 : $excess_big;
-        $excess_small = $excess_small < 0 ? 0 : $excess_small;
+    //     $excess_big = $excess_big < 0 ? 0 : $excess_big;
+    //     $excess_small = $excess_small < 0 ? 0 : $excess_small;
 
-        if($big > $limit_sold_out_big)
-        {
-            $excess_big = 0;
-        }
+    //     if($big > $limit_sold_out_big)
+    //     {
+    //         $excess_big = 0;
+    //     }
 
-        if($small > $limit_sold_out_small)
-        {
-            $excess_small = 0;
-        }
+    //     if($small > $limit_sold_out_small)
+    //     {
+    //         $excess_small = 0;
+    //     }
 
-        $ele = new stdClass();
-        $ele->total_customer = $total_customer;
-        $ele->betno = $num;
-        $ele->big = $big;
-        $ele->small = $small;
-        $ele->excess_big = $excess_big;
-        $ele->excess_small = $excess_small;
+    //     $ele = new stdClass();
+    //     $ele->total_customer = $total_customer;
+    //     $ele->betno = $num;
+    //     $ele->big = $big;
+    //     $ele->small = $small;
+    //     $ele->excess_big = $excess_big;
+    //     $ele->excess_small = $excess_small;
 
-        array_push($beAnalysis, $ele);
+    //     array_push($beAnalysis, $ele);
 
-        $total_big += $big;
-        $total_small += $small;
-        $total_big_excess += $excess_big;
-        $total_small_excess += $excess_small;
-    }   
+    //     $total_big += $big;
+    //     $total_small += $small;
+    //     $total_big_excess += $excess_big;
+    //     $total_small_excess += $excess_small;
+    // }   
 ?>
 @extends('layouts.app', ['class' => 'g-sidenav-show bg-gray-100'])
 
@@ -71,7 +71,18 @@
             <div class="col-12">
                 <div class="card mb-4">
                     <div class="card-header pb-0">
-                        <h6 class="font_times_new_roman">ADMIN ACTIVITIES</h6>
+                        <span class="font_times_new_roman"><strong>ADMIN ACTIVITIES</strong></span>  
+                            <div class="dropdown d-inline-block float-end">
+                                <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                Select company
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <li><a class="dropdown-item" href="#">m</a></li>
+                                    <li><a class="dropdown-item" href="#">d</a></li>
+                                    <li><a class="dropdown-item" href="#">t</a></li>
+                                    <li><a class="dropdown-item" href="#">m</a></li>
+                                </ul>
+                          </div>
                     </div>
                     <div class="card-body px-0 pt-0 pb-2">
                         <div class="table-responsive p-0">
@@ -101,6 +112,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @if (isset($beAnalysis))                                        
                                     @foreach($beAnalysis as $ele)
                                     <tr class="data" data-bs-toggle="modal" data-bs-target="#exampleModal">
                                         <td class="align-middle text-center">
@@ -138,6 +150,7 @@
                                         </td>
                                     </tr>
                                     @endforeach
+                                    @endif
                                     
                                     <tr class="text-success">
                                         <td class="align-middle text-center">
@@ -147,16 +160,25 @@
                                             <p class="text-lg font-weight-bold mb-0"></p>
                                         </td>
                                         <td class="text-center align-middle">
+                                            @if(isset($total_big))
                                             <p class="text-lg font-weight-bold mb-0">{{ $total_big }}</p>
+                                            @endif
                                         </td>
-                                        <td class="align-middle text-center">                                    
+                                        <td class="align-middle text-center">  
+                                            @if(isset($total_small))                                  
                                             <p class="text-lg font-weight-bold mb-0">{{ $total_small }}</p>
+                                            @endif
+
                                         </td>
-                                        <td class="align-middle text-center">                                        
+                                        <td class="align-middle text-center">  
+                                            @if(isset($total_small))                                       
                                             <p class="text-lg font-weight-bold mb-0">{{ $total_big_excess }}</p>
+                                            @endif
                                         </td>
-                                        <td class="align-middle text-center">                                        
+                                        <td class="align-middle text-center">   
+                                            @if(isset($total_small))                                      
                                             <p class="text-lg font-weight-bold mb-0">{{ $total_small_excess }}</p>
+                                            @endif
                                         </td>
                                     </tr>                                    
                                 </tbody>
@@ -179,12 +201,15 @@
                                             <p class="font-weight-bold mb-0">Set limit -Big</p>                
                                         </td>
                                        
-                                        <td class="align-middle text-center">                                        
+                                        <td class="align-middle text-center"> 
+                                            @if(isset($total_small))                                        
                                             <p class=" font-weight-bold mb-0 value">{{ $limit_big }}</p>
+                                            @endif
                                         </td>
                                         <td class="align-middle text-center" style="border-collapse: collapse">
                                             <a class="btn btn-link text-dark px-3 mb-0 edit_btn">
-                                                <i class="fas fa-pencil-alt text-dark me-2" aria-hidden="true"></i>Edit</a>
+                                                <i class="fas fa-pencil-alt text-dark me-2" aria-hidden="true"></i>Edit
+                                            </a>
                                         </td>
                                     </tr>                                    
                                     <tr>
@@ -192,8 +217,10 @@
                                             <p class=" font-weight-bold mb-0">Set limit -Small</p>                
                                         </td>
                                        
-                                        <td class="align-middle text-center">                                        
+                                        <td class="align-middle text-center">
+                                            @if(isset($total_small))                                         
                                             <p class="font-weight-bold mb-0 value">{{ $limit_small }}</p>
+                                            @endif
                                         </td>
                                         <td class="align-middle text-center" style="border-collapse: collapse">
                                             <a class="btn btn-link text-dark px-3 mb-0 edit_btn"><i
@@ -219,8 +246,10 @@
                                         <td class="align-middle text-center">
                                             <p class="font-weight-bold mb-0">Sold out limit -Big</p>                
                                         </td>                                       
-                                        <td class="align-middle text-center">                                        
+                                        <td class="align-middle text-center">       
+                                            @if(isset($total_small))                                  
                                             <p class="font-weight-bold mb-0 value">{{ $limit_sold_out_big }}</p>
+                                            @endif
                                         </td>
                                         <td class="align-middle text-center" style="border-collapse: collapse">
                                             <a class="btn btn-link text-dark px-3 mb-0 edit_btn"><i
@@ -231,8 +260,10 @@
                                         <td class="align-middle text-center">
                                             <p class="font-weight-bold mb-0">Sold out limit -Small</p>                
                                         </td>                                       
-                                        <td class="align-middle text-center">                                        
+                                        <td class="align-middle text-center"> 
+                                            @if(isset($total_small))                                        
                                             <p class="font-weight-bold mb-0 value">{{ $limit_sold_out_small }}</p>
+                                            @endif
                                         </td>
                                         <td class="align-middle text-center" style="border-collapse: collapse">
                                             <a class="btn btn-link text-dark px-3 mb-0 edit_btn"><i
@@ -293,7 +324,7 @@
 
     @include('layouts.footers.auth.footer')
     
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="js/jquery.min.js"></script>
     <script>
         $(document).ready(function(){
 
@@ -387,6 +418,47 @@
 
                         }
                     })
+            })
+
+            $('.dropdown-item').click(function () {
+                company = $(this).text()
+
+                switch(company)
+                {
+                    case 'm':
+                        location.href = "{{ route('page', ['page' => 'm']) }}"
+                        break
+
+                    case 'd':
+                        location.href = "{{ route('page', ['page' => 'd']) }}"
+                        break
+
+                    case 't':
+                        location.href = "{{ route('page', ['page' => 't']) }}"
+                        break
+
+                    case 's':
+                        location.href = "{{ route('page', ['page' => 's']) }}"
+                        break
+
+                }
+            //     $.ajax({
+            //             type: 'GET',
+            //             url: '/getTableData/' + company,
+            //             headers: {'x-csrf-token': '{{ csrf_token() }}'},
+                        
+            //             beforeSend: function () {
+                        
+            //             },
+
+            //             success:function(data) {
+
+            //             },
+                        
+            //             error: function (xhr, err) { 
+
+            //             }
+            //         })
             })
         })
     </script>

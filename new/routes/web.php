@@ -58,4 +58,5 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::post('/setLimit', [BeController::class, 'setLimit']);
 	Route::post('/addPoint', [BeController::class, 'addPoint']);
 	Route::get('/getDetails/{bettingno}', [BeController::class, 'getDetails']);
+	// Route::get('/getTableData/{company}', [BeController::class, 'getTableData'])->name('tableupdate');
 });
