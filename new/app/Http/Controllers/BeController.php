@@ -163,10 +163,23 @@ class BeController extends Controller
         ]);
     }
 
-    public function rankNumbers()
+    // For one company
+    // public function rankNumbers()
+    // {
+    //     # code...
+    //     $ranknumbers = RankNumber::all()->pluck('ranknumber')->toArray();
+
+    //     return response([
+    //        'ranknumbers' => $ranknumbers 
+    //     ]);
+    // }
+
+    // For 4 companies
+    public function rankNumbers(Request $request)
     {
         # code...
-        $ranknumbers = RankNumber::all()->pluck('ranknumber')->toArray();
+        $company = $request->company;
+        $ranknumbers = RankNumber::where('company', 'Like', '%'.$company.'%')->pluck('ranknumber')->toArray();
 
         return response([
            'ranknumbers' => $ranknumbers 
@@ -256,10 +269,13 @@ class BeController extends Controller
         ]);
     }
 
-    public function getDetails($bettingno)
+    public function getDetails($bettingno, $company)
     {
         # code...
-        $history = BeHistory::where('number', $bettingno)->get();
+        $history = BeHistory::where([
+                ['number', '=', $bettingno],
+                ['company', 'LIKE', '%'.$company.'%']
+            ])->get();
 
         foreach ($history as $key => $row) {
             # code...

@@ -100,7 +100,7 @@ class PageController extends Controller
             // }
             return view('pages.activities', 
                         compact('beAnalysis', 'limit_sold_out_big', 'limit_sold_out_small', 'total_big', 'total_small',
-                        'total_big_excess', 'total_small_excess', 'limit_big', 'limit_small')
+                        'total_big_excess', 'total_small_excess', 'limit_big', 'limit_small', 'company')
                     );
         }
 

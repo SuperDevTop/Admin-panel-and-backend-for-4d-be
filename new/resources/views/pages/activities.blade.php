@@ -74,13 +74,13 @@
                         <span class="font_times_new_roman"><strong>ADMIN ACTIVITIES</strong></span>  
                             <div class="dropdown d-inline-block float-end">
                                 <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                                Select company
+                                    Select company
                                 </button>
                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <li><a class="dropdown-item" href="#">m</a></li>
-                                    <li><a class="dropdown-item" href="#">d</a></li>
-                                    <li><a class="dropdown-item" href="#">t</a></li>
-                                    <li><a class="dropdown-item" href="#">m</a></li>
+                                    <li><a class="dropdown-item" href="#">Magnum</a></li>
+                                    <li><a class="dropdown-item" href="#">Damacai</a></li>
+                                    <li><a class="dropdown-item" href="#">Toto</a></li>
+                                    <li><a class="dropdown-item" href="#">G</a></li>
                                 </ul>
                           </div>
                     </div>
@@ -326,7 +326,18 @@
     
     <script src="js/jquery.min.js"></script>
     <script>
-        $(document).ready(function(){
+        $(document).ready(function() {
+            @if (isset($company))
+                @if ($company == 'm')
+                    $('#dropdownMenuButton').text('Magnum')
+                @elseif ($company == 'd')
+                    $('#dropdownMenuButton').text('Damacai')
+                @elseif ($company == 't')
+                    $('#dropdownMenuButton').text('Toto')
+                @else
+                    $('#dropdownMenuButton').text('G')
+                @endif
+            @endif
 
             $('.edit_btn').click(function(){
                 
@@ -383,9 +394,12 @@
                 // Getting the ticket number of this row
                 bettingno = $(this).children().eq(1).text().replace(/\s/g, '')
                 
+                btnText = $('#dropdownMenuButton').text()
+                company = btnText.substr(0, 1)
+                
                 $.ajax({
                         type: 'GET',
-                        url: '/getDetails/' + bettingno,
+                        url: '/getDetails/' + bettingno + '/' + company,
                         headers: {'x-csrf-token': '{{ csrf_token() }}'},
                         
                         beforeSend: function () {
@@ -425,22 +439,21 @@
 
                 switch(company)
                 {
-                    case 'm':
+                    case 'Magnum':
                         location.href = "{{ route('page', ['page' => 'm']) }}"
                         break
 
-                    case 'd':
+                    case 'Damacai':
                         location.href = "{{ route('page', ['page' => 'd']) }}"
                         break
 
-                    case 't':
+                    case 'Toto':
                         location.href = "{{ route('page', ['page' => 't']) }}"
                         break
 
-                    case 's':
+                    case 'G':
                         location.href = "{{ route('page', ['page' => 's']) }}"
                         break
-
                 }
             //     $.ajax({
             //             type: 'GET',
