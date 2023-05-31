@@ -27,29 +27,35 @@ class DatabaseSeeder extends Seeder
             'phoneNumber' => '1111111111'
         ]);
 
-        for($i = 0; $i < 23; $i++)
-        {
-            $ranknumber = new RankNumber();
-            $ranknumber->company = 'm';
-            $ranknumber->rank = $i + 1;
+        $companies = ['m', 'd', 't', 'g'];
 
-            if($i > 2 && $i < 13) // Rank 4: 10( Rank 1, 2, 3: 1)
+        for ($j = 0; $j < 4; $j++) { 
+            # code...
+            for($i = 0; $i < 23; $i++)
             {
-                $ranknumber->rank = 4;
+                $ranknumber = new RankNumber();
+                $ranknumber->company = $companies[$j];
+                $ranknumber->rank = $i + 1;
+
+                if($i > 2 && $i < 13) // Rank 4: 10( Rank 1, 2, 3: 1)
+                {
+                    $ranknumber->rank = 4;
+                }
+                elseif($i >= 13)
+                {
+                    $ranknumber->rank = 5;
+                }
+
+                $rand_num = rand(0, 9999);
+                $rand_num = strval($rand_num);
+                $rand_num = str_pad($rand_num, 4, '0', STR_PAD_LEFT);
+
+                $ranknumber->ranknumber = $rand_num;
+
+                $ranknumber->save();
             }
-            elseif($i >= 13)
-            {
-                $ranknumber->rank = 5;
-            }
-
-            $rand_num = rand(0, 9999);
-            $rand_num = strval($rand_num);
-            $rand_num = str_pad($rand_num, 4, '0', STR_PAD_LEFT);
-
-            $ranknumber->ranknumber = $rand_num;
-
-            $ranknumber->save();
         }
+
 
         $limit = new Limit();
         $limit->big = 50;
