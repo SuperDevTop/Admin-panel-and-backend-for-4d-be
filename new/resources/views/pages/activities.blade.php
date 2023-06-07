@@ -8,7 +8,7 @@
             <div class="col-12">
                 <div class="card mb-4">
                     <div class="card-header pb-0">
-                        <span class="font_times_new_roman"><strong>ADMIN ACTIVITIES</strong></span>  
+                        <span><strong>ADMIN ACTIVITIES</strong></span>  
                             <div class="dropdown d-inline-block float-end">
                                 <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                                     Select company
@@ -127,7 +127,7 @@
             <div class="col-md-6">
                 <div class="card mb-4">  
                     <div class="card-header pb-0">
-                        <h6 class="font_times_new_roman">Owner Acceptable Limit</h6>
+                        <h6><strong>OWNER ACCEPABLE LIMIT</strong></h6>
                     </div>             
                     <div class="card-body px-0 pt-0 pb-2">
                         <div class="table-responsive p-0">
@@ -170,10 +170,10 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6" style="font-family: var(--bs-body-font-family);">
                 <div class="card mb-4">  
                     <div class="card-header pb-0">
-                        <h6 class="font_times_new_roman">Betting Limit</h6>
+                        <h6><strong>BETTING LIMIT</strong></h6>
                     </div>             
                     <div class="card-body px-0 pt-0 pb-2">
                         <div class="table-responsive p-0">
@@ -219,12 +219,12 @@
     <!-- Modal -->
     <div class="modal fade pr-5 mt-5" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
-            <div class="modal-content" style="width: 600px">
+            <div class="modal-content">
                 <div class="modal-header display-block">
-                    <h5 class="modal-title text-center font_times_new_roman" id="exampleModalLabel">Details</h5>
+                    <h5 class="modal-title text-center" id="exampleModalLabel">Details</h5>
                     {{-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> --}}
                 </div>
-                <div class="modal-body">
+                <div class="modal-body" style="overflow-x: auto">
                     <table id="detailedTable" class="table align-items-center justify-content-center mb-0 admin_activities_1">
                         <thead>
                             <tr>
@@ -392,23 +392,6 @@
                         location.href = "{{ route('page', ['page' => 's']) }}"
                         break
                 }
-            //     $.ajax({
-            //             type: 'GET',
-            //             url: '/getTableData/' + company,
-            //             headers: {'x-csrf-token': '{{ csrf_token() }}'},
-                        
-            //             beforeSend: function () {
-                        
-            //             },
-
-            //             success:function(data) {
-
-            //             },
-                        
-            //             error: function (xhr, err) { 
-
-            //             }
-            //         })
             })
         })
     </script>
